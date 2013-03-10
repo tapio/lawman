@@ -38,7 +38,6 @@ function Map() {
 
 // The tile palette is precomputed in order to not have to create
 // thousands of Tiles on the fly.
-var AT = new ut.Tile("@", 255, 255, 255);
 var WALL = new ut.Tile('#', 100, 100, 100);
 var FLOOR = new ut.Tile('.', 50, 50, 50);
 

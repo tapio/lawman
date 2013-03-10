@@ -5,7 +5,7 @@ function Game() {
 
 Game.prototype.add = function(actor) {
 	this.actors.push(actor);
-}
+};
 
 Game.prototype.update = function() {
 	for (var i = 0; i < this.actors.length; ++i) {

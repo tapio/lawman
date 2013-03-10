@@ -1,4 +1,3 @@
-/*global ut */
 
 // Initialize stuff
 (function() {
@@ -15,7 +14,7 @@
 		game.update();
 		fov.update(pl.x, pl.y); // Update field of view
 		eng.update(pl.x, pl.y); // Update tiles
-		term.put(AT, term.cx, term.cy); // Player character
+		term.put(pl.tile, term.cx, term.cy); // Player character
 		term.render(); // Render
 	}
 
