@@ -56,7 +56,10 @@ Map.prototype.action = function(x, y) {
 	var t = this.getTile(x, y);
 	if (t.ch === '+') {
 		this.map[y][x] = DOOR_OPEN;
-		return "Door opened";
+		return "Door opened.";
+	}
+	if (t.ch === '-' || t.ch === '|') {
+		return "You look through the window.";
 	}
 	return null;
 };
