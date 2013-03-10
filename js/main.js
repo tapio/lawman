@@ -2,24 +2,38 @@
 // Initialize stuff
 (function() {
 	"use strict";
-	var map = generateTown(new Map());
-	var pl = new Actor({ x: 6, y: map.height / 2 });
+	var game = new Game();
+	var map = new Map();
+	generateTown(map, game);
+	var pl = new Actor({ name: "Sheriff", x: 6, y: map.height / 2, ai: null });
 	var term = new ut.Viewport(document.getElementById("game"), 41, 31, "auto", true);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
-	var game = new Game();
-	var message = "Welcome, sheriff!";
+	game.add(pl);
 
 	// "Main loop"
 	function tick() {
+		var i, a, len, fg, bg, tilex, tiley;
 		game.update();
+		var camx = clamp(pl.x - term.cx, 0, map.width - term.w);
+		var camy = clamp(pl.y - term.cy, 0, map.height - term.h);
 		fov.update(pl.x, pl.y); // Update field of view
-		eng.update(pl.x, pl.y); // Update tiles
-		if (message)
-			term.putString(message, 0, 0, 200, 0, 0);
-		term.put(pl.tile, term.cx, term.cy); // Player character
+		eng.update(camx + term.cx, camy + term.cy); // Update tiles
+		if (game.messages.length)
+			term.putString(last(game.messages), 0, 0, 200, 0, 0);
+		// Actors
+		len = game.actors.length;
+		for (i = 0; i < len; ++i) {
+			a = game.actors[i];
+			if (a !== pl && !fov.visible(a.x, a.y)) continue;
+			tilex = a.x - camx;
+			tiley = a.y - camy;
+			fg = a.tile; // Actor tile
+			bg = term.get(tilex, tiley).getBackgroundJSON(); // Background color
+			term.put(new ut.Tile(fg.ch, fg.r, fg.g, fg.b, bg.r, bg.g, bg.b), tilex, tiley);
+		}
 		term.render(); // Render
-		message = "";
+		game.messages = [];
 	}
 
 	// Key press handler - movement & collision handling
@@ -33,8 +47,11 @@
 		var oldx = pl.x, oldy = pl.y;
 		pl.x += movedir.x;
 		pl.y += movedir.y;
-		if (!map.passable(pl.x, pl.y)) {
-			message = map.action(pl.x, pl.y);
+		if (game.interact(pl)) {
+			pl.x = oldx; pl.y = oldy;
+		} else if (!map.passable(pl.x, pl.y)) {
+			var msg = map.action(pl.x, pl.y);
+			if (msg) game.messages.push(msg);
 			pl.x = oldx; pl.y = oldy;
 		}
 		tick();

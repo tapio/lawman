@@ -11,13 +11,15 @@ function FOV(viewport, eng) {
 	var maskBuffer = new Array(viewport.h);
 	for (var j = 0; j < viewport.h; ++j)
 		maskBuffer[j] = new Array(viewport.w);
-	// Attach the look-up callback
-	eng.setMaskFunc(function(x, y) {
+
+	// Mask function
+	this.visible = function(x, y) {
 		x -= maskOrigin.x;
 		y -= maskOrigin.y;
 		if (x < 0 || y < 0 || x >= viewport.w || y >= viewport.h) return false;
 		return maskBuffer[y][x];
-	});
+	};
+	eng.setMaskFunc(this.visible);
 
 
 	// Shoots a line-of-sight beam that marks tiles as visible as it goes
