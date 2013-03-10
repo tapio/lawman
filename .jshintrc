@@ -1,0 +1,6 @@
+{
+	"predef": [ "console", "ut", "Actor", "FOV", "Map", "Game", "Weapon" ],
+	"browser": true,
+	"newcap": true,
+	"trailing": true
+}
