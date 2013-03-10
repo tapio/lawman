@@ -1,5 +1,5 @@
 
-function generateTown(map) {
+function generateTown(map, game) {
 	var tiles = map.map;
 	var w = map.width;
 	var h = map.height;
@@ -37,7 +37,7 @@ function generateTown(map) {
 	// Houses
 	(function() {
 		var margin = 10;
-		var lotSize = 15;
+		var lotSize = 16;
 
 		function randomHouse(facing) {
 			var house = {
@@ -73,10 +73,25 @@ function generateTown(map) {
 		var houses = Math.floor((w - 2 * margin) / lotSize);
 		for (var i = 0; i < houses; ++i) {
 			var lotX = margin + i * lotSize;
-			createHouseFrame(randomHouse("down"), lotX, cy - lotSize - roadWidth / 2 - 1);
-			createHouseFrame(randomHouse("up"), lotX, cy + roadWidth / 2 + 1);
+			// Top house
+			var lotY = cy - lotSize - roadWidth / 2 - 1;
+			createHouseFrame(randomHouse("down"), lotX, lotY);
+			if (r.random() > 0.5) {
+				game.add(new Actor({
+					x: lotX + lotSize / 2,
+					y: lotY + lotSize / 2
+				}));
+			}
+			// Bottom house
+			lotY = cy + roadWidth / 2 + 1;
+			createHouseFrame(randomHouse("up"), lotX, lotY);
+			if (r.random() > 0.5) {
+				game.add(new Actor({
+					x: lotX + lotSize / 2,
+					y: lotY + lotSize / 2
+				}));
+			}
 		}
 	})();
 
-	return map;
 }
