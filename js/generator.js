@@ -31,7 +31,7 @@ function generateTown(map, game) {
 	})();
 
 	// Main road
-	var roadWidth = 8;
+	var roadWidth = 6;
 	map.fill(ROAD, 4, cy - roadWidth / 2, w - 8, roadWidth);
 
 	// Houses
