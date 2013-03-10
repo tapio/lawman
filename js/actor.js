@@ -16,6 +16,7 @@ function Actor(params) {
 
 Actor.prototype.update = function(map) {
 	if (!this.ai) return;
+
 	// Idle
 	if (!this.ai.waypoints.length) {
 		if (RNG.random() > this.ai.lazyness) {
@@ -29,6 +30,7 @@ Actor.prototype.update = function(map) {
 				this.x = oldx; this.y = oldy;
 			}
 		}
+	// Path following
 	} else {
 		var waypoint = this.ai.waypoints[0];
 		this.x = waypoint.x;

@@ -5,13 +5,12 @@
 	var map = new Map();
 	var game = new Game(map);
 	generateTown(map, game);
+	map.updatePathFindingGrid();
 	var pl = new Actor({ name: "Sheriff", x: 6, y: map.height / 2, ai: null });
 	var term = new ut.Viewport(document.getElementById("game"), 41, 31, "auto", true);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
 	game.add(pl);
-	var TURNS_PER_DAY = 960;
-	var turn = TURNS_PER_DAY / 2;
 	var dark = new Color(0.4, 0.4, 0.4);
 	var LIGHT_GRADIENT = new ColorGradient(dark, dark);
 	LIGHT_GRADIENT.add(0.17, dark); // Dark until 4am
@@ -22,8 +21,7 @@
 
 	// Day-night cycle
 	eng.setShaderFunc(function(tile) {
-		var time = (turn % TURNS_PER_DAY) / TURNS_PER_DAY;
-		var light = LIGHT_GRADIENT.get(time);
+		var light = LIGHT_GRADIENT.get(game.time);
 		var shaded = new ut.Tile(tile.getChar());
 		// Do the blending
 		shaded.r = Math.round(light.r * tile.r);
@@ -34,7 +32,6 @@
 
 	// "Main loop"
 	function tick() {
-		++turn;
 		var i, a, len, fg, bg, tilex, tiley;
 		game.update();
 		var camx = clamp(pl.x - term.cx, 0, map.width - term.w);
@@ -55,9 +52,7 @@
 			term.put(new ut.Tile(fg.ch, fg.r, fg.g, fg.b, bg.r, bg.g, bg.b), tilex, tiley);
 		}
 		// Display time of day
-		var time = Math.floor((turn % TURNS_PER_DAY) / TURNS_PER_DAY * 24);
-		var suffix = time > 12 ? "pm" : "am";
-		term.putString((time > 12 ? time - 12 : time) + suffix, 0, term.h-1, 200, 150, 0);
+		term.putString((game.hour > 12 ? (game.hour - 12) + "pm" : game.hour + "am"), 0, term.h-1, 200, 150, 0);
 		term.render(); // Render
 		game.messages = [];
 	}
