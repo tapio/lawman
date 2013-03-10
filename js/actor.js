@@ -9,35 +9,71 @@ function Actor(params) {
 	this.health = 100;
 	this.ai = params.ai === null ? null : {
 		waypoints: [],
-		home: null,
-		lazyness: RNG.random()
+		home: { x: this.x, y: this.y },
+		lazyness: RNG.random(),
+		state: "sleep",
 	};
 }
 
-Actor.prototype.update = function(map) {
+Actor.prototype.update = function(game) {
 	if (!this.ai) return;
+
+	// Figure out current state
+	if (game.hour >= 7 && game.hour < 8 && RNG.random() <= game.TURN_LENGTH) { // Wake up
+		this.ai.state = "work";
+	} else if (game.hour >= 8 && game.hour < 16) { // Regular day things
+		this.ai.state = "work";
+	} else if (game.hour >= 16 && game.hour < 18 && RNG.random() <= game.TURN_LENGTH / 2) { // Off from work
+		this.ai.state = "play";
+	} else if (game.hour >= 18 && game.hour < 21) { // Entertainment in the evenings
+		this.ai.state = "play";
+	} else if (game.hour >= 20 && game.hour < 22 && RNG.random() <= game.TURN_LENGTH / 2) { // Go home
+		this.ai.state = "home";
+	} else if (game.hour >= 22 && game.hour < 23) { // Go home
+		this.ai.state = "home";
+	} else if (game.hour >= 23 || game.hour < 7) { // Sleep
+		this.ai.state = "sleep";
+	}
+
+	var lazyness = this.ai.lazyness;
+	if (this.ai.state == "sleep") lazyness = 1;
+	else if (this.ai.state == "home") lazyness *= 1.2;
+	else if (this.ai.state == "play") lazyness *= 0.8;
 
 	// Idle
 	if (!this.ai.waypoints.length) {
-		if (RNG.random() > this.ai.lazyness) {
+		// Find home
+		if (this.ai.state == "home" && distance(this.x, this.y, this.ai.home.x, this.ai.home.y) > 4) {
+			this.ai.waypoints = game.map.getPath(this.x, this.y, this.ai.home.x, this.ai.home.y);
+		// Go somewhere
+		} else if (this.ai.state == "work" || this.ai.state == "play") {
+			this.ai.waypoints = game.map.getPath(this.x, this.y,
+				Math.floor(RNG.random() * game.map.width),
+				Math.floor(RNG.random() * game.map.height)
+			);
+		// Just hangout
+		} else if (RNG.random() > lazyness) {
 			var movedir = { x: 0, y: 0 };
 			if (RNG.random() < 0.5) movedir.x = RNG.random() < 0.5 ? -1 : 1;
 			else movedir.y = RNG.random() < 0.5 ? -1 : 1;
 			var oldx = this.x, oldy = this.y;
 			this.x += movedir.x;
 			this.y += movedir.y;
-			if (!map.passable(this.x, this.y)) {
+			if (!game.map.passable(this.x, this.y)) {
 				this.x = oldx; this.y = oldy;
 			}
 		}
+	}
+
 	// Path following
-	} else {
+	if (this.ai.waypoints.length) {
 		var waypoint = this.ai.waypoints[0];
 		this.x = waypoint.x;
 		this.y = waypoint.y;
 		this.ai.waypoints.splice(0, 1);
 	}
 };
+
 
 Actor.generateName = function(gender, rng) {
 	var name = "";

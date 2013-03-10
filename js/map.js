@@ -21,7 +21,7 @@ function Map() {
 	for (var j = 0; j < this.height; ++j)
 		this.map[j] = new Array(this.width);
 
-	this.grid = new PF.Grid(this.width, this.depth);
+	this.grid = new PF.Grid(this.width, this.height);
 	this.pathFinder = new PF.AStarFinder({
 		allowDiagonal: false,
 		heurestic: PF.Heuristic.euclidean
@@ -52,9 +52,10 @@ Map.prototype.getTile = function(x, y) {
 	return t;
 };
 
-Map.prototype.passable = function(x, y) {
+Map.prototype.passable = function(x, y, ai) {
 	var t = this.getTile(x, y);
 	if (t.ch === '.' || t.ch === '/') return true;
+	if (ai && t.ch === '+') return true;
 	else return false;
 };
 
@@ -72,14 +73,9 @@ Map.prototype.action = function(x, y) {
 };
 
 Map.prototype.updatePathFindingGrid = function() {
-	var grid = new Array(this.height);
-	for (var j = 0; j < this.height; ++j) {
-		grid[j] = [];
-		for (var i = 0; i < this.width; ++i) {
-			grid[j].push(this.passable(i, j) ? 1 : 0);
-		}
-	}
-	this.grid = new PF.Grid(this.width, this.height, grid);
+	for (var j = 0; j < this.height; ++j)
+		for (var i = 0; i < this.width; ++i)
+			this.grid.setWalkableAt(i, j, this.passable(i, j, true) ? 1 : 0);
 };
 
 Map.prototype.getPath = function(startX, startY, goalX, goalY) {

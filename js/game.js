@@ -6,6 +6,8 @@ function Game(map) {
 	this.turn = 0;
 	this.time = 0;
 	this.hour = 0;
+	this.TURNS_PER_DAY = 480;
+	this.TURN_LENGTH = 24 / this.TURNS_PER_DAY;
 }
 
 Game.prototype.add = function(actor) {
@@ -24,12 +26,11 @@ Game.prototype.interact = function(pl) {
 };
 
 Game.prototype.update = function() {
-	var TURNS_PER_DAY = 960;
 	++this.turn;
-	this.time = ((this.turn + TURNS_PER_DAY / 2) % TURNS_PER_DAY) / TURNS_PER_DAY;
+	this.time = ((this.turn + this.TURNS_PER_DAY / 2) % this.TURNS_PER_DAY) / this.TURNS_PER_DAY;
 	this.hour = Math.floor(this.time * 24);
 
 	for (var i = 0; i < this.actors.length; ++i) {
-		this.actors[i].update(this.map);
+		this.actors[i].update(this);
 	}
 };
