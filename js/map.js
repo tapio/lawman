@@ -7,8 +7,8 @@ function Map() {
 }
 
 Map.prototype.fill = function(tile, x, y, w, h) {
-	for (var j = 0; j < h; ++j)
-		for (var i = 0; i < w; ++i)
+	for (var j = y; j < y + h; ++j)
+		for (var i = x; i < x + w; ++i)
 			this.map[j][i] = tile;
 };
 

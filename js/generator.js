@@ -6,13 +6,15 @@ function generateTown(map) {
 
 	var WALL = new ut.Tile('#', 100, 100, 100);
 	var FLOOR = new ut.Tile('.', 50, 50, 50);
-	var DIRT = new ut.Tile('.', 80, 80, 50);
+	var DIRT = new ut.Tile('.', 80, 50, 0);
+	var ROAD = new ut.Tile('.', 80, 70, 50);
 	var MOUNTAIN = new ut.Tile('^', 120, 120, 120);
 
 	var r = new Alea(42);
 
 	// Fill with dirt
 	map.fill(DIRT, 0, 0, w, h);
+
 	// Borders
 	(function() {
 		map.border(MOUNTAIN, 0, 0, w, h);
@@ -29,6 +31,9 @@ function generateTown(map) {
 			if (r.random() > 0.66) tiles[h-3][i] = MOUNTAIN;
 		}
 	})();
+
+	// Main road
+	map.fill(ROAD, 4, Math.floor(h / 2) - 4, w - 8, 8);
 
 	return map;
 }
