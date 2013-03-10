@@ -1,52 +1,31 @@
 function Map() {
-	this.map = [
-		" #####             #####      ",
-		" #...########      #...####   ",
-		" #..........#      #......#   ",
-		" #...######.#      #..###.#   ",
-		" #####    #.#      ######.####",
-		"          #.#          #.....#",
-		"          #.#          #.....#",
-		"          #.############.....#",
-		"          #..................#",
-		"          ####.###############",
-		"##########   #.#     #....#   ",
-		"#........##  #.#     #.#..#   ",
-		"#..####...#  #.#     #.#..#   ",
-		"#.........#  #.#     #.###### ",
-		"#.........#  #.#     #......# ",
-		"##.########  #.#     #......# ",
-		" #.#         #.#     #####.## ",
-		" #.#         #.#         #.#  ",
-		" #.#   #######.#         #.#  ",
-		" #.#   #.......#         #.#  ",
-		" #.#   #.....#.#         #.#  ",
-		" #.#   #.....#.#         #.#  ",
-		" #.#   #.....#.#         #.#  ",
-		" #.#   #.....#.#         #.#  ",
-		" #.#   #######.#         #.#  ",
-		" #.#         #.###########.#  ",
-		" #.#         #.............#  ",
-		" #.#############.###########  ",
-		" #...............#            ",
-		" #################            "
-	];
-	this.width = this.map[0].length;
-	this.height = this.map.length;
+	this.width = 100;
+	this.height = 50;
+	this.map = new Array(this.height);
+	for (var j = 0; j < this.height; ++j)
+		this.map[j] = new Array(this.width);
 }
 
+Map.prototype.fill = function(tile, x, y, w, h) {
+	for (var j = 0; j < h; ++j)
+		for (var i = 0; i < w; ++i)
+			this.map[j][i] = tile;
+};
 
-// The tile palette is precomputed in order to not have to create
-// thousands of Tiles on the fly.
-var WALL = new ut.Tile('#', 100, 100, 100);
-var FLOOR = new ut.Tile('.', 50, 50, 50);
+Map.prototype.border = function(tile, x, y, w, h) {
+	for (var j = 0; j < h; ++j) {
+		this.map[j][x] = tile;
+		this.map[j][x+w-1] = tile;
+	}
+	for (var i = 0; i < w; ++i) {
+		this.map[y][i] = tile;
+		this.map[y+h-1][i] = tile;
+	}
+};
 
-// Returns a Tile based on the char array map
 Map.prototype.getTile = function(x, y) {
-	var t = "";
+	var t;
 	try { t = this.map[y][x]; }
 	catch(err) { return ut.NULLTILE; }
-	if (t === '#') return WALL;
-	if (t === '.') return FLOOR;
-	return ut.NULLTILE;
+	return t;
 };

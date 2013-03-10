@@ -3,7 +3,7 @@
 (function() {
 	"use strict";
 	var pl = new Actor({ x: 3, y: 2 });
-	var map = new Map();
+	var map = generateTown(new Map());
 	var term = new ut.Viewport(document.getElementById("game"), 41, 31, "auto", true);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);

@@ -6,11 +6,10 @@
 
 function FOV(viewport, eng) {
 
-	var maskBuffer;
 	var maskOrigin = { x: 0, y: 0 };
 
 	// Create an array for the FOV
-	maskBuffer = new Array(viewport.h);
+	var maskBuffer = new Array(viewport.h);
 	for (var j = 0; j < viewport.h; ++j)
 		maskBuffer[j] = new Array(viewport.w);
 	// Attach the look-up callback
