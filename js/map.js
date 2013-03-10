@@ -54,12 +54,13 @@ Map.prototype.passable = function(x, y) {
 
 Map.prototype.action = function(x, y) {
 	var t = this.getTile(x, y);
-	if (t.ch === '+') {
-		this.map[y][x] = DOOR_OPEN;
-		return "Door opened.";
+	switch (t.ch) {
+		case '+':
+			this.map[y][x] = DOOR_OPEN;
+			return "Door opened.";
+		case '-': case '|':
+			return "You look through the window.";
+		case '^':
+			return "Those mountains are too steep to climb.";
 	}
-	if (t.ch === '-' || t.ch === '|') {
-		return "You look through the window.";
-	}
-	return null;
 };
