@@ -79,7 +79,7 @@ Map.prototype.updatePathFindingGrid = function() {
 			grid[j].push(this.passable(i, j) ? 1 : 0);
 		}
 	}
-	this.grid = new PF.Grid(this.width, this.depth, grid);
+	this.grid = new PF.Grid(this.width, this.height, grid);
 };
 
 Map.prototype.getPath = function(startX, startY, goalX, goalY) {
