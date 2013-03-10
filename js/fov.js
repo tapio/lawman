@@ -5,7 +5,6 @@
 /*global term, eng */
 
 function FOV(viewport, eng) {
-
 	var maskOrigin = { x: 0, y: 0 };
 
 	// Create an array for the FOV
@@ -24,10 +23,12 @@ function FOV(viewport, eng) {
 	// Shoots a line-of-sight beam that marks tiles as visible as it goes
 	function shootRay(x, y, a) {
 		var step = 0.3333;
-		var maxdist = viewport.cy / step;
-		var dx = Math.cos(a) * step;
-		var dy = -Math.sin(a) * step;
-		var xx = x, yy = y;
+		var maxdist = (viewport.cy - 1) / step;
+		var dx = Math.cos(a);
+		var dy = -Math.sin(a);
+		var xx = x + dx, yy = y + dy;
+		dx *= step;
+		dy *= step;
 		for (var i = 0; i < maxdist; ++i) {
 			// Check for walls at the current spot
 			var testx = Math.round(xx);
