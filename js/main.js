@@ -29,7 +29,9 @@
 		var oldx = pl.x, oldy = pl.y;
 		pl.x += movedir.x;
 		pl.y += movedir.y;
-		if (eng.tileFunc(pl.x, pl.y).getChar() !== '.') { pl.x = oldx; pl.y = oldy; }
+		var tile = eng.tileFunc(pl.x, pl.y);
+		if (tile.ch === '+') { console.log("Door"); }
+		else if (tile.ch !== '.') { pl.x = oldx; pl.y = oldy; }
 		tick();
 	});
 
