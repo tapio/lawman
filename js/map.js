@@ -1,7 +1,7 @@
 
 var WALL = new ut.Tile('#', 100, 100, 100);
-var WINDOW_H = new ut.Tile('-', 160, 200, 255);
-var WINDOW_V = new ut.Tile('|', 160, 200, 255);
+var WINDOW_H = new ut.Tile('─', 160, 200, 255);
+var WINDOW_V = new ut.Tile('│', 160, 200, 255);
 var DOOR = new ut.Tile('+', 110, 30, 0);
 var DOOR_OPEN = new ut.Tile('/', 110, 50, 0);
 var FLOOR = new ut.Tile('.', 150, 140, 80);
@@ -58,7 +58,7 @@ Map.prototype.action = function(x, y) {
 		case '+':
 			this.map[y][x] = DOOR_OPEN;
 			return "Door opened.";
-		case '-': case '|':
+		case '─': case '│':
 			return "You look through the window.";
 		case '^':
 			return "Those mountains are too steep to climb.";
