@@ -6,7 +6,7 @@ var DOOR = new ut.Tile('+', 110, 30, 0);
 var DOOR_OPEN = new ut.Tile('/', 110, 50, 0);
 var FLOOR = new ut.Tile('.', 150, 140, 80);
 var DIRT = new ut.Tile('.', 80, 50, 0);
-var ROAD = new ut.Tile('.', 80, 70, 50);
+var ROAD = new ut.Tile('.', 90, 80, 60);
 var MOUNTAIN = new ut.Tile('^', 120, 120, 120);
 
 WINDOW_H.transparent = 1;

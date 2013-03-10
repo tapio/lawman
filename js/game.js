@@ -1,7 +1,8 @@
 
-function Game() {
+function Game(map) {
 	this.actors = [];
 	this.messages = [ "Welcome, sheriff!" ];
+	this.map = map;
 }
 
 Game.prototype.add = function(actor) {
@@ -21,6 +22,6 @@ Game.prototype.interact = function(pl) {
 
 Game.prototype.update = function() {
 	for (var i = 0; i < this.actors.length; ++i) {
-		this.actors[i].update();
+		this.actors[i].update(this.map);
 	}
 };

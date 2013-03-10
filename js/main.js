@@ -2,17 +2,19 @@
 // Initialize stuff
 (function() {
 	"use strict";
-	var game = new Game();
 	var map = new Map();
+	var game = new Game(map);
 	generateTown(map, game);
 	var pl = new Actor({ name: "Sheriff", x: 6, y: map.height / 2, ai: null });
 	var term = new ut.Viewport(document.getElementById("game"), 41, 31, "auto", true);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
 	game.add(pl);
+	var turn = 0;
 
 	// "Main loop"
 	function tick() {
+		++turn;
 		var i, a, len, fg, bg, tilex, tiley;
 		game.update();
 		var camx = clamp(pl.x - term.cx, 0, map.width - term.w);

@@ -7,12 +7,32 @@ function Actor(params) {
 	this.y = params.y || 0;
 	this.tile = params.tile || new ut.Tile("@", 0, 0, 128);
 	this.health = 100;
-	this.targetx = null;
-	this.targety = null;
+	this.ai = params.ai === null ? null : {
+		idle: true,
+		target: { x: 0, y: 0 },
+		home: null,
+		lazyness: RNG.random()
+	};
 }
 
-Actor.prototype.update = function() {
-
+Actor.prototype.update = function(map) {
+	if (!this.ai) return;
+	// Idle
+	if (this.ai.idle) {
+		if (RNG.random() > this.ai.lazyness) {
+			var movedir = { x: 0, y: 0 };
+			if (RNG.random() < 0.5) movedir.x = RNG.random() < 0.5 ? -1 : 1;
+			else movedir.y = RNG.random() < 0.5 ? -1 : 1;
+			var oldx = this.x, oldy = this.y;
+			this.x += movedir.x;
+			this.y += movedir.y;
+			if (!map.passable(this.x, this.y)) {
+				this.x = oldx; this.y = oldy;
+			}
+		}
+	} else {
+		// TODO: Path finding
+	}
 };
 
 Actor.generateName = function(gender, rng) {
