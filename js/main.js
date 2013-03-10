@@ -2,8 +2,8 @@
 // Initialize stuff
 (function() {
 	"use strict";
-	var pl = new Actor({ x: 3, y: 2 });
 	var map = generateTown(new Map());
+	var pl = new Actor({ x: 6, y: map.height / 2 });
 	var term = new ut.Viewport(document.getElementById("game"), 41, 31, "auto", true);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
