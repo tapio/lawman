@@ -36,7 +36,8 @@ function FOV(viewport, eng) {
 			// Mark the tile visible
 			maskBuffer[testy - maskOrigin.y][testx - maskOrigin.x] = true;
 			// If wall is encountered, terminate ray
-			if (eng.tileFunc(testx, testy).getChar() !== ".")
+			var tile = eng.tileFunc(testx, testy);
+			if (tile.ch !== "." && !tile.transparent)
 				return;
 			// Advance the beam according to the step variables
 			xx += dx; yy += dy;
