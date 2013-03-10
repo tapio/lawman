@@ -10,7 +10,27 @@
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
 	game.add(pl);
-	var turn = 0;
+	var TURNS_PER_DAY = 960;
+	var turn = TURNS_PER_DAY / 2;
+	var dark = new Color(0.4, 0.4, 0.4);
+	var LIGHT_GRADIENT = new ColorGradient(dark, dark);
+	LIGHT_GRADIENT.add(0.17, dark); // Dark until 4am
+	LIGHT_GRADIENT.add(0.40, new Color(0.9, 0.9, 1.0)); // Getting lighter
+	LIGHT_GRADIENT.add(0.70, new Color(1.0, 1.0, 0.9)); // Warm midday sun
+	LIGHT_GRADIENT.add(0.80, new Color(0.9, 0.7, 0.7)); // Red dusk
+	LIGHT_GRADIENT.add(0.87, dark); // Sun has set
+
+	// Day-night cycle
+	eng.setShaderFunc(function(tile) {
+		var time = (turn % TURNS_PER_DAY) / TURNS_PER_DAY;
+		var light = LIGHT_GRADIENT.get(time);
+		var shaded = new ut.Tile(tile.getChar());
+		// Do the blending
+		shaded.r = Math.round(light.r * tile.r);
+		shaded.g = Math.round(light.g * tile.g);
+		shaded.b = Math.round(light.b * tile.b);
+		return shaded;
+	});
 
 	// "Main loop"
 	function tick() {
@@ -34,6 +54,10 @@
 			bg = term.get(tilex, tiley).getBackgroundJSON(); // Background color
 			term.put(new ut.Tile(fg.ch, fg.r, fg.g, fg.b, bg.r, bg.g, bg.b), tilex, tiley);
 		}
+		// Display time of day
+		var time = Math.floor((turn % TURNS_PER_DAY) / TURNS_PER_DAY * 24);
+		var suffix = time > 12 ? "pm" : "am";
+		term.putString((time > 12 ? time - 12 : time) + suffix, 0, term.h-1, 200, 150, 0);
 		term.render(); // Render
 		game.messages = [];
 	}
