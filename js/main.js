@@ -38,7 +38,7 @@ var map = [
 // The tile palette is precomputed in order to not have to create
 // thousands of Tiles on the fly.
 var AT = new ut.Tile("@", 255, 255, 255);
-var WALL = new ut.Tile('▒', 100, 100, 100);
+var WALL = new ut.Tile('#', 100, 100, 100);
 var FLOOR = new ut.Tile('.', 50, 50, 50);
 
 // Returns a Tile based on the char array map
@@ -77,7 +77,7 @@ function onKeyDown(k) {
 // Initialize stuff
 (function() {
 	window.setInterval(tick, 50); // Animation
-	term = new ut.Viewport(document.getElementById("game"), 41, 25);
+	term = new ut.Viewport(document.getElementById("game"), 41, 31, "auto", true);
 	eng = new ut.Engine(term, getDungeonTile, map[0].length, map.length);
 	ut.initInput(onKeyDown);
 	initFOV();
