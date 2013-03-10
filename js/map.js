@@ -20,6 +20,12 @@ function Map() {
 	this.map = new Array(this.height);
 	for (var j = 0; j < this.height; ++j)
 		this.map[j] = new Array(this.width);
+
+	this.grid = new PF.Grid(this.width, this.depth);
+	this.pathFinder = new PF.AStarFinder({
+		allowDiagonal: false,
+		heurestic: PF.Heuristic.euclidean
+	});
 }
 
 Map.prototype.fill = function(tile, x, y, w, h) {
@@ -64,3 +70,22 @@ Map.prototype.action = function(x, y) {
 			return "Those mountains are too steep to climb.";
 	}
 };
+
+Map.prototype.updatePathFindingGrid = function() {
+	var grid = new Array(this.height);
+	for (var j = 0; j < this.height; ++j) {
+		grid[j] = [];
+		for (var i = 0; i < this.width; ++i) {
+			grid[j].push(this.passable(i, j) ? 1 : 0);
+		}
+	}
+	this.grid = new PF.Grid(this.width, this.depth, grid);
+};
+
+Map.prototype.getPath = function(startX, startY, goalX, goalY) {
+	var path = this.pathFinder.findPath(startX, startY, goalX, goalY, this.grid.clone());
+	var waypoints = [];
+	for (var i = 0; i < path.length; ++i)
+		waypoints.push({ x: path[i][0], y: path[i][1] });
+	return waypoints
+}

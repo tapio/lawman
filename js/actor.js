@@ -8,8 +8,7 @@ function Actor(params) {
 	this.tile = params.tile || new ut.Tile("@", 0, 0, 128);
 	this.health = 100;
 	this.ai = params.ai === null ? null : {
-		idle: true,
-		target: { x: 0, y: 0 },
+		waypoints: [],
 		home: null,
 		lazyness: RNG.random()
 	};
@@ -18,7 +17,7 @@ function Actor(params) {
 Actor.prototype.update = function(map) {
 	if (!this.ai) return;
 	// Idle
-	if (this.ai.idle) {
+	if (!this.ai.waypoints.length) {
 		if (RNG.random() > this.ai.lazyness) {
 			var movedir = { x: 0, y: 0 };
 			if (RNG.random() < 0.5) movedir.x = RNG.random() < 0.5 ? -1 : 1;
@@ -31,7 +30,10 @@ Actor.prototype.update = function(map) {
 			}
 		}
 	} else {
-		// TODO: Path finding
+		var waypoint = this.ai.waypoints[0];
+		this.x = waypoint.x;
+		this.y = waypoint.y;
+		this.ai.waypoints.splice(0, 1);
 	}
 };
 
