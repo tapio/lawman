@@ -5,7 +5,7 @@ function generateTown(map, game) {
 	var h = map.height;
 	var cy = Math.floor(h / 2);
 
-	var r = new Alea(42);
+	var r = new Alea();
 	function rand(lo, hi) {
 		return lo + Math.floor(r.random() * (hi - lo + 1));
 	}
