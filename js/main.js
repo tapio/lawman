@@ -8,14 +8,18 @@
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
 	var game = new Game();
+	var message = "Welcome, sheriff!";
 
 	// "Main loop"
 	function tick() {
 		game.update();
 		fov.update(pl.x, pl.y); // Update field of view
 		eng.update(pl.x, pl.y); // Update tiles
+		if (message)
+			term.putString(message, 0, 0, 200, 0, 0);
 		term.put(pl.tile, term.cx, term.cy); // Player character
 		term.render(); // Render
+		message = "";
 	}
 
 	// Key press handler - movement & collision handling
@@ -29,12 +33,13 @@
 		var oldx = pl.x, oldy = pl.y;
 		pl.x += movedir.x;
 		pl.y += movedir.y;
-		var tile = eng.tileFunc(pl.x, pl.y);
-		if (tile.ch === '+') { console.log("Door"); }
-		else if (tile.ch !== '.') { pl.x = oldx; pl.y = oldy; }
+		if (!map.passable(pl.x, pl.y)) {
+			message = map.action(pl.x, pl.y);
+			pl.x = oldx; pl.y = oldy;
+		}
 		tick();
 	});
 
-	window.setInterval(tick, 50); // Animation
+	tick();
 })();
 

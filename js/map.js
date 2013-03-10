@@ -1,3 +1,19 @@
+
+var WALL = new ut.Tile('#', 100, 100, 100);
+var WINDOW_H = new ut.Tile('-', 160, 200, 255);
+var WINDOW_V = new ut.Tile('|', 160, 200, 255);
+var DOOR = new ut.Tile('+', 110, 30, 0);
+var DOOR_OPEN = new ut.Tile('/', 110, 50, 0);
+var FLOOR = new ut.Tile('.', 150, 140, 80);
+var DIRT = new ut.Tile('.', 80, 50, 0);
+var ROAD = new ut.Tile('.', 80, 70, 50);
+var MOUNTAIN = new ut.Tile('^', 120, 120, 120);
+
+WINDOW_H.transparent = 1;
+WINDOW_V.transparent = 1;
+DOOR_OPEN.transparent = 1;
+
+
 function Map() {
 	this.width = 100;
 	this.height = 80;
@@ -28,4 +44,19 @@ Map.prototype.getTile = function(x, y) {
 	try { t = this.map[y][x]; }
 	catch(err) { return ut.NULLTILE; }
 	return t;
+};
+
+Map.prototype.passable = function(x, y) {
+	var t = this.getTile(x, y);
+	if (t.ch === '.' || t.ch === '/') return true;
+	else return false;
+};
+
+Map.prototype.action = function(x, y) {
+	var t = this.getTile(x, y);
+	if (t.ch === '+') {
+		this.map[y][x] = DOOR_OPEN;
+		return "Door opened";
+	}
+	return null;
 };

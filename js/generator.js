@@ -5,18 +5,6 @@ function generateTown(map) {
 	var h = map.height;
 	var cy = Math.floor(h / 2);
 
-	var WALL = new ut.Tile('#', 100, 100, 100);
-	var WINDOW_H = new ut.Tile('-', 160, 200, 255);
-	var WINDOW_V = new ut.Tile('|', 160, 200, 255);
-	var DOOR = new ut.Tile('+', 110, 30, 0);
-	var FLOOR = new ut.Tile('.', 150, 140, 80);
-	var DIRT = new ut.Tile('.', 80, 50, 0);
-	var ROAD = new ut.Tile('.', 80, 70, 50);
-	var MOUNTAIN = new ut.Tile('^', 120, 120, 120);
-
-	WINDOW_H.transparent = 1;
-	WINDOW_V.transparent = 1;
-
 	var r = new Alea(42);
 	function rand(lo, hi) {
 		return lo + Math.floor(r.random() * (hi - lo + 1));
