@@ -5,7 +5,6 @@ function Actor(params) {
 	this.job = params.job || Actor.generateJob(this.gender, RNG);
 	this.x = params.x || 0;
 	this.y = params.y || 0;
-	this.tile = params.tile || new ut.Tile("@", 0, 0, 128);
 	this.maxHealth = 15;
 	this.health = this.maxHealth;
 	this.money = params.money || Math.floor(RNG.random() * 10);
@@ -21,7 +20,15 @@ function Actor(params) {
 		home: { x: this.x, y: this.y },
 		lazyness: RNG.random(),
 		state: "sleep",
+		courage: RNG.random(),
+		hostile: params.hostile === undefined ? false : params.hostile
 	};
+	this.tile = params.tile;
+	if (!this.tile) {
+		if (this.ai && this.ai.hostile) this.tile = new ut.Tile("@", 128, 0, 0);
+		else if (this.gender == "f") this.tile = new ut.Tile("@", 250, 100, 170);
+		else this.tile = new ut.Tile("@", 128, 64, 0);
+	}
 }
 
 Actor.prototype.equip = function(num) {
