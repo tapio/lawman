@@ -8,8 +8,16 @@ body {
 	text-align: center;
 }
 
-#game {
+#wrapper {
 	margin-top: 20px;
+}
+
+#game {
+	font-size: 16px;
+	background-color: #000;
+}
+
+#hud {
 	font-size: 16px;
 	background-color: #000;
 }

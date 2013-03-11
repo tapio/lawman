@@ -7,7 +7,9 @@
 	generateTown(map, game);
 	map.updatePathFindingGrid();
 	var pl = new Actor({ name: "Sheriff", x: 6, y: map.height / 2, ai: null });
-	var term = new ut.Viewport(document.getElementById("game"), 41, 31, "auto", true);
+	var term = new ut.Viewport(document.getElementById("game"), 31, 31, "auto", true);
+	var hud = new ut.Viewport(document.getElementById("hud"), 25, 31, "auto");
+	var ui = new UI(hud, pl);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
 	game.add(pl);
@@ -54,6 +56,7 @@
 		// Display time of day
 		term.putString((game.hour > 12 ? (game.hour - 12) + "pm" : game.hour + "am"), 0, term.h-1, 200, 150, 0);
 		term.render(); // Render
+		ui.update();
 		game.messages = [];
 	}
 
