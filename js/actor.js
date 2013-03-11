@@ -1,12 +1,20 @@
 
 function Actor(params) {
-	this.gender = params.gender || RNG.random() > 0.5 ? "f" : "m";
+	this.gender = params.gender || (RNG.random() > 0.5 ? "f" : "m");
 	this.name = params.name || Actor.generateName(this.gender, RNG);
 	this.job = params.job || Actor.generateJob(this.gender, RNG);
 	this.x = params.x || 0;
 	this.y = params.y || 0;
 	this.tile = params.tile || new ut.Tile("@", 0, 0, 128);
-	this.health = 100;
+	this.maxHealth = 15;
+	this.health = this.maxHealth;
+	this.weapons = {
+		gun1: this.gender === "m" ? Weapons.remington.clone() : Weapons.dummy,
+		gun2: Weapons.dummy,
+		secondary: Weapons.dummy,
+		throwable: Weapons.dummy
+	};
+	this.drawn = null;
 	this.ai = params.ai === null ? null : {
 		waypoints: [],
 		home: { x: this.x, y: this.y },
