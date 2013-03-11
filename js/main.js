@@ -74,18 +74,22 @@
 		else if (k === ut.KEY_RIGHT || k === ut.KEY_L) movedir.x = 1;
 		else if (k === ut.KEY_UP || k === ut.KEY_K) movedir.y = -1;
 		else if (k === ut.KEY_DOWN || k === ut.KEY_J) movedir.y = 1;
-		if (movedir.x === 0 && movedir.y === 0) return;
-		var oldx = pl.x, oldy = pl.y;
-		pl.x += movedir.x;
-		pl.y += movedir.y;
-		if (game.interact(pl)) {
-			pl.x = oldx; pl.y = oldy;
-		} else if (!map.passable(pl.x, pl.y)) {
-			var msg = map.action(pl.x, pl.y);
-			if (msg) game.messages.push(msg);
-			pl.x = oldx; pl.y = oldy;
+		if (movedir.x !== 0 || movedir.y !== 0) {
+			var oldx = pl.x, oldy = pl.y;
+			pl.x += movedir.x;
+			pl.y += movedir.y;
+			if (game.interact(pl)) {
+				pl.x = oldx; pl.y = oldy;
+			} else if (!map.passable(pl.x, pl.y)) {
+				var msg = map.action(pl.x, pl.y);
+				if (msg) game.messages.push(msg);
+				pl.x = oldx; pl.y = oldy;
+			}
+			tick();
 		}
-		tick();
+		else if (k === ut.KEY_1) { pl.equip(1); tick(); }
+		else if (k === ut.KEY_2) { pl.equip(2); tick(); }
+		else if (k === ut.KEY_3) { pl.equip(3); tick(); }
 	});
 
 	tick();

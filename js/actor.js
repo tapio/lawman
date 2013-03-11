@@ -24,6 +24,19 @@ function Actor(params) {
 	};
 }
 
+Actor.prototype.equip = function(num) {
+	if (num == 1 && this.weapons.gun1.damage) {
+		if (this.drawn == this.weapons.gun1) this.drawn = null;
+		else this.drawn = this.weapons.gun1;
+	} else if (num == 2 && this.weapons.secondary.damage) {
+		if (this.drawn == this.weapons.secondary) this.drawn = null;
+		else this.drawn = this.weapons.secondary;
+	} else if (num == 3 && this.weapons.throwable.damage) {
+		if (this.drawn == this.weapons.throwable) this.drawn = null;
+		else this.drawn = this.weapons.throwable;
+	}
+};
+
 Actor.prototype.update = function(game) {
 	if (!this.ai) return;
 
