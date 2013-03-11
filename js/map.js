@@ -4,9 +4,9 @@ var WINDOW_H = new ut.Tile('─', 160, 200, 255);
 var WINDOW_V = new ut.Tile('│', 160, 200, 255);
 var DOOR = new ut.Tile('+', 110, 30, 0);
 var DOOR_OPEN = new ut.Tile('/', 110, 50, 0);
-var FLOOR = new ut.Tile('.', 150, 140, 80);
-var DIRT = new ut.Tile('.', 80, 50, 0);
-var ROAD = new ut.Tile('.', 90, 80, 60);
+var FLOOR = new ut.Tile('·', 150, 140, 80);
+var DIRT = new ut.Tile('·', 80, 50, 0);
+var ROAD = new ut.Tile('·', 90, 80, 60);
 var MOUNTAIN = new ut.Tile('^', 120, 120, 120);
 
 WINDOW_H.transparent = 1;
@@ -54,7 +54,7 @@ Map.prototype.getTile = function(x, y) {
 
 Map.prototype.passable = function(x, y, ai) {
 	var t = this.getTile(x, y);
-	if (t.ch === '.' || t.ch === '/') return true;
+	if (t.ch === '·' || t.ch === '/') return true;
 	if (ai && t.ch === '+') return true;
 	else return false;
 };

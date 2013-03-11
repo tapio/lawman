@@ -21,7 +21,6 @@ function FOV(viewport, eng) {
 	};
 	eng.setMaskFunc(this.visible);
 
-
 	// Shoots a line-of-sight beam that marks tiles as visible as it goes
 	function shootRay(x, y, a) {
 		var step = 0.3333;
@@ -39,7 +38,7 @@ function FOV(viewport, eng) {
 			maskBuffer[testy - maskOrigin.y][testx - maskOrigin.x] = true;
 			// If wall is encountered, terminate ray
 			var tile = eng.tileFunc(testx, testy);
-			if (tile.ch !== "." && !tile.transparent)
+			if (tile.ch !== "·" && !tile.transparent)
 				return;
 			// Advance the beam according to the step variables
 			xx += dx; yy += dy;
