@@ -11,6 +11,7 @@ var MOUNTAIN = new ut.Tile('^', 120, 120, 120);
 var BARREL = new ut.Tile('o', 160, 120, 0);
 var CHAIR = new ut.Tile('h', 160, 120, 0);
 var TABLE = new ut.Tile('O', 160, 120, 0);
+var CLOSET = new ut.Tile('⌹', 160, 120, 0);
 
 WINDOW_H.transparent = 1;
 WINDOW_V.transparent = 1;
@@ -73,6 +74,12 @@ Map.prototype.action = function(x, y) {
 			return "Door opened.";
 		case 'o':
 			return "It's a barrel.";
+		case 'O':
+			return "Nothing on the table.";
+		case 'h':
+			return "No time to sit.";
+		case '⌹':
+			return "The closet is locked.";
 		case '─': case '│':
 			return "You look through the window.";
 		case '^':

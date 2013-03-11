@@ -50,6 +50,15 @@ function generateTown(map, game) {
 			return house;
 		}
 
+		function addFurniture(x1, y1, x2, y2, amount) {
+			while (amount) {
+				var x = rand(x1, x2);
+				var y = rand(y1, y2);
+				tiles[y][x] = randElem([ CHAIR, TABLE, CLOSET ], r);
+				--amount;
+			}
+		}
+
 		function createHouseFrame(house, lotX, lotY) {
 			var x1 = lotX + house.x, x2 = lotX + house.x + house.w - 1;
 			var y1 = lotY + house.y, y2 = lotY + house.y + house.h - 1;
@@ -59,7 +68,7 @@ function generateTown(map, game) {
 			var doorX = lotX + house.x + Math.floor(house.w / 2);
 			var doorY = house.facing === "up" ? lotY + house.y : lotY + house.y + house.h - 1;
 			tiles[doorY][doorX] = DOOR;
-			// Windows & barrels
+			// Windows & outside barrels
 			for (var i = x1 + 1; i < x2; ++i) { // horizontal
 				if (i == doorX) continue;
 				if (rand(1,10) == 1) tiles[y1][i] = WINDOW_H;
@@ -73,6 +82,7 @@ function generateTown(map, game) {
 				if (rand(1,20) == 1) tiles[j][x1-1] = BARREL;
 				if (rand(1,20) == 1) tiles[j][x2+1] = BARREL;
 			}
+			addFurniture(x1 + 1, y1 + 1, x2 - 1, y2 - 1, rand(4,6));
 		}
 
 		var houses = Math.floor((w - 2 * margin) / lotSize);
