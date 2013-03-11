@@ -55,19 +55,24 @@ function generateTown(map, game) {
 			var y1 = lotY + house.y, y2 = lotY + house.y + house.h - 1;
 			map.fill(FLOOR, x1 + 1, y1 + 1, house.w - 2, house.h - 2);
 			map.border(WALL, x1, y1, house.w, house.h);
-			// Windows
-			for (var i = x1 + 1; i < x2; ++i) { // horizontal
-				if (rand(1,10) == 1) tiles[y1][i] = WINDOW_H;
-				if (rand(1,10) == 1) tiles[y2][i] = WINDOW_H;
-			}
-			for (var j = y1 + 1; j < y2; ++j) { // vertical
-				if (rand(1,10) == 1) tiles[j][x1] = WINDOW_V;
-				if (rand(1,10) == 1) tiles[j][x2] = WINDOW_V;
-			}
 			// Door
 			var doorX = lotX + house.x + Math.floor(house.w / 2);
 			var doorY = house.facing === "up" ? lotY + house.y : lotY + house.y + house.h - 1;
 			tiles[doorY][doorX] = DOOR;
+			// Windows & barrels
+			for (var i = x1 + 1; i < x2; ++i) { // horizontal
+				if (i == doorX) continue;
+				if (rand(1,10) == 1) tiles[y1][i] = WINDOW_H;
+				if (rand(1,10) == 1) tiles[y2][i] = WINDOW_H;
+				if (rand(1,20) == 1) tiles[y1-1][i] = BARREL;
+				if (rand(1,20) == 1) tiles[y2+1][i] = BARREL;
+			}
+			for (var j = y1 + 1; j < y2; ++j) { // vertical
+				if (rand(1,10) == 1) tiles[j][x1] = WINDOW_V;
+				if (rand(1,10) == 1) tiles[j][x2] = WINDOW_V;
+				if (rand(1,20) == 1) tiles[j][x1-1] = BARREL;
+				if (rand(1,20) == 1) tiles[j][x2+1] = BARREL;
+			}
 		}
 
 		var houses = Math.floor((w - 2 * margin) / lotSize);

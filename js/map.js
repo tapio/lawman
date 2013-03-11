@@ -8,10 +8,16 @@ var FLOOR = new ut.Tile('·', 150, 140, 80);
 var DIRT = new ut.Tile('·', 80, 50, 0);
 var ROAD = new ut.Tile('·', 90, 80, 60);
 var MOUNTAIN = new ut.Tile('^', 120, 120, 120);
+var BARREL = new ut.Tile('o', 160, 120, 0);
+var CHAIR = new ut.Tile('h', 160, 120, 0);
+var TABLE = new ut.Tile('O', 160, 120, 0);
 
 WINDOW_H.transparent = 1;
 WINDOW_V.transparent = 1;
 DOOR_OPEN.transparent = 1;
+BARREL.transparent = 1;
+CHAIR.transparent = 1;
+TABLE.transparent = 1;
 
 
 function Map() {
@@ -65,6 +71,8 @@ Map.prototype.action = function(x, y) {
 		case '+':
 			this.map[y][x] = DOOR_OPEN;
 			return "Door opened.";
+		case 'o':
+			return "It's a barrel.";
 		case '─': case '│':
 			return "You look through the window.";
 		case '^':
