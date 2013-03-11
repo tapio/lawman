@@ -8,6 +8,7 @@ function Actor(params) {
 	this.tile = params.tile || new ut.Tile("@", 0, 0, 128);
 	this.maxHealth = 15;
 	this.health = this.maxHealth;
+	this.money = params.money || Math.floor(RNG.random() * 10);
 	this.weapons = {
 		gun1: this.gender === "m" ? Weapons.remington.clone() : Weapons.dummy,
 		gun2: Weapons.dummy,

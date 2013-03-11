@@ -6,7 +6,14 @@
 	var game = new Game(map);
 	generateTown(map, game);
 	map.updatePathFindingGrid();
-	var pl = new Actor({ name: "Sheriff", x: 6, y: map.height / 2, gender: "m", ai: null });
+	var pl = new Actor({
+		name: "Sheriff",
+		x: 6,
+		y: map.height / 2,
+		gender: "m",
+		money: 10,
+		ai: null
+	});
 	var term = new ut.Viewport(document.getElementById("game"), 31, 31, "auto", true);
 	var hud = new ut.Viewport(document.getElementById("hud"), 25, 31, "auto");
 	var ui = new UI(hud, pl);
