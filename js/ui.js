@@ -36,7 +36,7 @@ function UI(view, pl) {
 		view.putString("[3] Throwable:", 0, row++, c.r, c.g, c.b);
 		view.putString(" " + pl.weapons.throwable.name, 0, row++, c.r, c.g, c.b);
 		view.putString(" Ammo: " + build("✒", pl.weapons.throwable.ammo), 0, row++, c.r, c.g, c.b);
-		++row
+		++row;
 		view.putString("[␣] " + (pl.drawn ? "Shoot" : "Punch"), 0, row++, 160, 0, 0);
 
 		view.render();

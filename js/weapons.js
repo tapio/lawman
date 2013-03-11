@@ -12,7 +12,7 @@ function Weapon(params) {
 
 Weapon.prototype.clone = function() {
 	return new Weapon(this);
-}
+};
 
 var Weapons = {
 	dummy: {
@@ -82,4 +82,4 @@ var Weapons = {
 		range: 4,
 		clipSize: 1
 	})
-}
+};

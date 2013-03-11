@@ -83,5 +83,5 @@ Map.prototype.getPath = function(startX, startY, goalX, goalY) {
 	var waypoints = [];
 	for (var i = 0; i < path.length; ++i)
 		waypoints.push({ x: path[i][0], y: path[i][1] });
-	return waypoints
-}
+	return waypoints;
+};

@@ -4,7 +4,7 @@ function Color(r, g, b) {
 	this.g = g || 0;
 	this.b = b || 0;
 	return this;
-};
+}
 
 Color.prototype.set = function(r, g, b) {
 	this.r = r;
@@ -56,4 +56,4 @@ function ColorGradient(color0, color1) {
 		factor = (factor - a.f) / (b.f - a.f);
 		return a.c.clone().blend(b.c, factor);
 	};
-};
+}
