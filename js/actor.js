@@ -51,8 +51,11 @@ Actor.prototype.shoot = function(target) {
 	if (!this.drawn) return;
 	var d = distance(this.x, this.y, target.x, target.y);
 	if (d > this.drawn.range) return "Bullet fell short..."
-	target.health = Math.max(0, target.health - this.drawn.damage);
-	return "You hit " + target.name + "!";
+	target.health -= this.drawn.damage;
+	if (target.health <= 0) {
+		this.money += 10 + Math.floor(RNG.random() * 10);
+		return "You kill " + target.name + "!";
+	} else return "You hit " + target.name + "!";
 };
 
 Actor.prototype.banditAI = function(game) {

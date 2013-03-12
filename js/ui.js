@@ -21,6 +21,7 @@ function UI(view, pl) {
 		view.putString(build("♥", pl.health, "♡", pl.maxHealth), 8, row++, 255, 0, 0);
 		view.putString("Money: $" + pl.money, 0, row++, 200, 200, 0);
 		++row;
+		// Weapons
 		c = pickColor(pl.weapons.gun1, pl);
 		ammoStr = " Ammo: " + build("✒", pl.weapons.gun1.ammo, " ", pl.weapons.gun1.clipSize);
 		view.putString("[1] Right hand:", 0, row++, c.r, c.g, c.b);
@@ -41,6 +42,7 @@ function UI(view, pl) {
 		view.putString(" " + pl.weapons.throwable.name, 0, row++, c.r, c.g, c.b);
 		view.putString(ammoStr, 0, row++, c.r, c.g, c.b);
 		++row;
+		// Action button
 		if (pl.drawn && pl.drawn.ammo)
 			view.putString("[␣] Shoot closest", 0, row++, 160, 0, 0);
 		if (pl.drawn && !pl.drawn.ammo)
