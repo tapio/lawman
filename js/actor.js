@@ -58,6 +58,12 @@ Actor.prototype.shoot = function(target) {
 	} else return "You hit " + target.name + "!";
 };
 
+Actor.prototype.reload = function(target) {
+	if (!this.drawn || this.drawn.ammo == this.drawn.clipSize) return;
+	// TODO: Non-infinite bullets
+	this.drawn.ammo = this.drawn.clipSize;
+}
+
 Actor.prototype.banditAI = function(game) {
 	// Find nearest lawman
 	var target = game.findNearestActor(this, 1);
