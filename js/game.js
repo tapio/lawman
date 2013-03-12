@@ -8,6 +8,7 @@ function Game(map) {
 	this.hour = 0;
 	this.TURNS_PER_DAY = 480;
 	this.TURN_LENGTH = 24 / this.TURNS_PER_DAY;
+	this.banditTurn = 10 + Math.floor(RNG.random() * 10);
 }
 
 Game.prototype.add = function(actor) {
@@ -30,6 +31,23 @@ Game.prototype.update = function() {
 	this.time = ((this.turn + this.TURNS_PER_DAY / 2) % this.TURNS_PER_DAY) / this.TURNS_PER_DAY;
 	this.hour = Math.floor(this.time * 24);
 
+	// Spawn bandits?
+	if (this.turn == this.banditTurn) {
+		this.banditTurn += 100 + Math.floor(RNG.random() * 100);
+		// TODO: Proper location picking
+		var x = 3 + Math.floor(RNG.random() * this.map.width - 6);
+		var y = 3 + Math.floor(RNG.random() * this.map.height - 6);
+		this.add(new Actor({
+			x: x,
+			y: y,
+			gender: "m",
+			job: "Bandit",
+			hostile: true
+		}));
+		console.log("Spawned bandit to ", x, y);
+	}
+
+	// Update actors
 	for (var i = 0; i < this.actors.length; ++i) {
 		this.actors[i].update(this);
 	}
