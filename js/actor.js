@@ -14,7 +14,7 @@ function Actor(params) {
 		secondary: Weapons.dummy,
 		throwable: Weapons.dummy
 	};
-	this.drawn = null;
+	this.drawn = params.hostile ? this.weapons.gun1 : null;
 	this.faction = params.hostile ? -1 : 0; // -1: bandit, 0: neutral, 1: lawmen
 	this.ai = params.ai === null ? null : {
 		waypoints: [],
@@ -47,13 +47,21 @@ Actor.prototype.equip = function(num) {
 	}
 };
 
+Actor.prototype.shoot = function(target) {
+	if (!this.drawn) return;
+	var d = distance(this.x, this.y, target.x, target.y);
+	if (d > this.drawn.range) return "Bullet fell short..."
+	target.health = Math.max(0, target.health - this.drawn.damage);
+	return "You hit " + target.name + "!";
+};
+
 Actor.prototype.banditAI = function(game) {
 	// Find nearest lawman
 	var target = game.findNearestActor(this, 1);
 	if (!target) return;
 	// If close, shoot
 	if (target.dist < 8) { // TODO: Determine optimal range
-		// TODO: Shoot
+		this.shoot(target.actor);
 		this.ai.waypoints = [];
 		console.log("Shoot!");
 	}

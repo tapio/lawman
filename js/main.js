@@ -71,6 +71,7 @@
 
 	// Key press handler - movement & collision handling
 	ut.initInput(function(k) {
+		var msg = null;
 		var movedir = { x: 0, y: 0 }; // Movement vector
 		if (k === ut.KEY_LEFT || k === ut.KEY_H) movedir.x = -1;
 		else if (k === ut.KEY_RIGHT || k === ut.KEY_L) movedir.x = 1;
@@ -83,7 +84,7 @@
 			if (game.interact(pl)) {
 				pl.x = oldx; pl.y = oldy;
 			} else if (!map.passable(pl.x, pl.y)) {
-				var msg = map.action(pl.x, pl.y);
+				msg = map.action(pl.x, pl.y);
 				if (msg) game.messages.push(msg);
 				pl.x = oldx; pl.y = oldy;
 			}
@@ -92,6 +93,13 @@
 		else if (k === ut.KEY_SPACE && pl.drawn) {
 			if (pl.drawn.ammo) { // Shooting
 				--pl.drawn.ammo;
+				var target = game.findNearestActor(pl, -1);
+				if (target && target.dist < term.cy) {
+					msg = pl.shoot(target.actor);
+					if (msg) game.messages.push(msg);
+				} else {
+					game.messages.push("You shoot in the air for fun.");
+				}
 			} else { // Reload
 				pl.drawn.ammo = pl.drawn.clipSize;
 			}

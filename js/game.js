@@ -66,7 +66,9 @@ Game.prototype.update = function() {
 	}
 
 	// Update actors
-	for (var i = 0; i < this.actors.length; ++i) {
-		this.actors[i].update(this);
+	for (var i = this.actors.length-1; i >= 0; --i) {
+		var actor = this.actors[i];
+		if (actor.health <= 0) this.actors.splice(i, 1);
+		else actor.update(this);
 	}
 };
