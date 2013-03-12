@@ -15,6 +15,7 @@ function UI(view, pl) {
 	}
 
 	this.update = function() {
+		view.clear();
 		var row = 0, c, ammoStr = "";
 		view.putString("Health:", 0, row, 160, 0, 0);
 		view.putString(build("♥", pl.health, "♡", pl.maxHealth), 8, row++, 255, 0, 0);
@@ -43,7 +44,7 @@ function UI(view, pl) {
 		if (pl.drawn && pl.drawn.ammo)
 			view.putString("[␣] Shoot closest", 0, row++, 160, 0, 0);
 		if (pl.drawn && !pl.drawn.ammo)
-			view.putString("[␣] Reload       ", 0, row++, 160, 0, 0);
+			view.putString("[␣] Reload", 0, row++, 160, 0, 0);
 
 		view.render();
 	};
