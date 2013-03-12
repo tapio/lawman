@@ -10,7 +10,7 @@ function UI(view, pl) {
 
 	function pickColor(gun, pl) {
 		if (!gun.damage) return { r: 64, g: 64, b: 64 };
-		if (pl.drawn == gun) return { r: 160, g: 0, b: 0 };
+		if (pl.drawn == gun) return { r: 60, g: 160, b: 0 };
 		return { r: 160, g: 100, b: 64 };
 	}
 
@@ -37,7 +37,8 @@ function UI(view, pl) {
 		view.putString(" " + pl.weapons.throwable.name, 0, row++, c.r, c.g, c.b);
 		view.putString(" Ammo: " + build("✒", pl.weapons.throwable.ammo), 0, row++, c.r, c.g, c.b);
 		++row;
-		view.putString("[␣] " + (pl.drawn ? "Shoot" : "Punch"), 0, row++, 160, 0, 0);
+		if (pl.drawn)
+			view.putString("[␣] Shoot", 0, row++, 160, 0, 0);
 
 		view.render();
 	};
