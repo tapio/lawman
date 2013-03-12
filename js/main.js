@@ -88,6 +88,14 @@
 			}
 			tick();
 		}
+		else if (k === ut.KEY_SPACE && pl.drawn) {
+			if (pl.drawn.ammo) { // Shooting
+				--pl.drawn.ammo;
+			} else { // Reload
+				pl.drawn.ammo = pl.drawn.clipSize;
+			}
+			tick();
+		}
 		else if (k === ut.KEY_1) { pl.equip(1); tick(); }
 		else if (k === ut.KEY_2) { pl.equip(2); tick(); }
 		else if (k === ut.KEY_3) { pl.equip(3); tick(); }
