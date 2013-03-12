@@ -44,9 +44,11 @@ Actor.prototype.equip = function(num) {
 	}
 };
 
-Actor.prototype.update = function(game) {
-	if (!this.ai) return;
+Actor.prototype.banditAI = function(game) {
 
+};
+
+Actor.prototype.commonerAI = function(game) {
 	// Figure out current state
 	if (game.hour >= 7 && game.hour < 8 && RNG.random() <= game.TURN_LENGTH) { // Wake up
 		this.ai.state = "work";
@@ -93,6 +95,13 @@ Actor.prototype.update = function(game) {
 			}
 		}
 	}
+};
+
+Actor.prototype.update = function(game) {
+	if (!this.ai) return;
+
+	if (this.ai.hostile) this.banditAI(game);
+	else this.commonerAI(game);
 
 	// Path following
 	if (this.ai.waypoints.length) {
