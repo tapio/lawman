@@ -15,6 +15,7 @@
 		ai: null,
 		tile: new ut.Tile("@", 0, 0, 160)
 	});
+	pl.faction = 1; // Lawman
 	var term = new ut.Viewport(document.getElementById("game"), 31, 31, "auto", true);
 	var hud = new ut.Viewport(document.getElementById("hud"), 25, 31, "auto");
 	var ui = new UI(hud, pl);

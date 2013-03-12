@@ -15,6 +15,7 @@ function Actor(params) {
 		throwable: Weapons.dummy
 	};
 	this.drawn = null;
+	this.faction = params.hostile ? -1 : 0; // -1: bandit, 0: neutral, 1: lawmen
 	this.ai = params.ai === null ? null : {
 		waypoints: [],
 		home: { x: this.x, y: this.y },
@@ -32,6 +33,8 @@ function Actor(params) {
 }
 
 Actor.prototype.equip = function(num) {
+	// TODO: Refactor
+	// TODO: Akimbo equip
 	if (num == 1 && this.weapons.gun1.damage) {
 		if (this.drawn == this.weapons.gun1) this.drawn = null;
 		else this.drawn = this.weapons.gun1;
@@ -45,7 +48,18 @@ Actor.prototype.equip = function(num) {
 };
 
 Actor.prototype.banditAI = function(game) {
-
+	// Find nearest lawman
+	var target = game.findNearestActor(this, 1);
+	if (!target) return;
+	// If close, shoot
+	if (target.dist < 8) { // TODO: Determine optimal range
+		// TODO: Shoot
+		this.ai.waypoints = [];
+	}
+	// If far and nothing to do, find a path to target
+	else if (!this.ai.waypoints.length) {
+		this.ai.waypoints = game.map.getPath(this.x, this.y, target.actor.x, target.actor.y);
+	}
 };
 
 Actor.prototype.commonerAI = function(game) {

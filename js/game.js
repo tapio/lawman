@@ -26,6 +26,22 @@ Game.prototype.interact = function(pl) {
 	return false;
 };
 
+Game.prototype.findNearestActor = function(searcher, faction) {
+	var min_d = 1000000;
+	var closest = null;
+	for (var i = 0; i < this.actors.length; ++i) {
+		var actor = this.actors[i];
+		if (actor === searcher) continue;
+		var d = distance2(searcher.x, searcher.y, actor.x, actor.y);
+		if (d < min_d) {
+			if (faction === undefined || actor.faction === faction)
+				closest = actor;
+		}
+	}
+	if (closest) return { dist: Math.sqrt(min_d), actor: closest };
+	else return null;
+};
+
 Game.prototype.update = function() {
 	++this.turn;
 	this.time = ((this.turn + this.TURNS_PER_DAY / 2) % this.TURNS_PER_DAY) / this.TURNS_PER_DAY;
