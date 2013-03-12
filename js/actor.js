@@ -55,6 +55,7 @@ Actor.prototype.banditAI = function(game) {
 	if (target.dist < 8) { // TODO: Determine optimal range
 		// TODO: Shoot
 		this.ai.waypoints = [];
+		console.log("Shoot!");
 	}
 	// If far and nothing to do, find a path to target
 	else if (!this.ai.waypoints.length) {

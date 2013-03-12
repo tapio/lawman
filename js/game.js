@@ -27,15 +27,17 @@ Game.prototype.interact = function(pl) {
 };
 
 Game.prototype.findNearestActor = function(searcher, faction) {
-	var min_d = 1000000;
+	var min_d = Infinity;
 	var closest = null;
 	for (var i = 0; i < this.actors.length; ++i) {
 		var actor = this.actors[i];
 		if (actor === searcher) continue;
 		var d = distance2(searcher.x, searcher.y, actor.x, actor.y);
 		if (d < min_d) {
-			if (faction === undefined || actor.faction === faction)
+			if (faction === undefined || actor.faction === faction) {
 				closest = actor;
+				min_d = d;
+			}
 		}
 	}
 	if (closest) return { dist: Math.sqrt(min_d), actor: closest };
