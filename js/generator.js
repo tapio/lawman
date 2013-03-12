@@ -59,7 +59,7 @@ function generateTown(map, game) {
 			}
 		}
 
-		function createHouseFrame(house, lotX, lotY) {
+		function createHouseFrame(house, lotX, lotY, type) {
 			var x1 = lotX + house.x, x2 = lotX + house.x + house.w - 1;
 			var y1 = lotY + house.y, y2 = lotY + house.y + house.h - 1;
 			map.fill(FLOOR, x1 + 1, y1 + 1, house.w - 2, house.h - 2);
@@ -82,15 +82,21 @@ function generateTown(map, game) {
 				if (rand(1,20) == 1) tiles[j][x1-1] = BARREL;
 				if (rand(1,20) == 1) tiles[j][x2+1] = BARREL;
 			}
-			addFurniture(x1 + 1, y1 + 1, x2 - 1, y2 - 1, rand(4,6));
+			if (type == "house")
+				addFurniture(x1 + 1, y1 + 1, x2 - 1, y2 - 1, rand(4,6));
 		}
 
-		var houses = Math.floor((w - 2 * margin) / lotSize);
-		for (var i = 0; i < houses; ++i) {
+		var places = [ "doctor", "gunstore", "sheriff", "saloon", "church" ];
+		var numHouses = Math.floor((w - 2 * margin) / lotSize);
+		var i;
+		for (i = places.length; i < numHouses * 2; ++i)
+			places.push("house");
+
+		for (i = 0; i < numHouses; ++i) {
 			var lotX = margin + i * lotSize;
 			// Top house
 			var lotY = cy - lotSize - roadWidth / 2 - 1;
-			createHouseFrame(randomHouse("down"), lotX, lotY);
+			createHouseFrame(randomHouse("down"), lotX, lotY, places[i]);
 			if (r.random() > 0.5) {
 				game.add(new Actor({
 					x: lotX + lotSize / 2,
@@ -99,7 +105,7 @@ function generateTown(map, game) {
 			}
 			// Bottom house
 			lotY = cy + roadWidth / 2 + 1;
-			createHouseFrame(randomHouse("up"), lotX, lotY);
+			createHouseFrame(randomHouse("up"), lotX, lotY, places[numHouses + i]);
 			if (r.random() > 0.5) {
 				game.add(new Actor({
 					x: lotX + lotSize / 2,
