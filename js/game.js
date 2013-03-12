@@ -51,8 +51,8 @@ Game.prototype.update = function() {
 	if (this.turn == this.banditTurn) {
 		this.banditTurn += 100 + Math.floor(RNG.random() * 100);
 		// TODO: Proper location picking
-		var x = 3 + Math.floor(RNG.random() * this.map.width - 6);
-		var y = 3 + Math.floor(RNG.random() * this.map.height - 6);
+		var x = 3 + Math.floor(RNG.random() * (this.map.width - 6));
+		var y = 3 + Math.floor(RNG.random() * (this.map.height - 6));
 		this.add(new Actor({
 			x: x,
 			y: y,
