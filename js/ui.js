@@ -70,7 +70,7 @@ function UI(view, pl) {
 			invSize += item.space;
 			if (invX > view.w) { invX = invX % view.w; ++row; }
 		}
-		view.putString(build("_", pl.maxInventory - invSize), invX, row, 50, 255, 50);
+		view.putString(build(".", pl.maxInventory - invSize), invX, row, 50, 255, 50);
 
 		view.render();
 	};
