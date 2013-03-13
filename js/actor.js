@@ -24,6 +24,8 @@ function Actor(params) {
 		courage: RNG.random(),
 		hostile: params.hostile === undefined ? false : params.hostile
 	};
+	this.inventory = [ Items.bandage, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo ];
+	this.maxInventory = 50;
 	this.tile = params.tile;
 	if (!this.tile) {
 		if (this.ai && this.ai.hostile) this.tile = new ut.Tile("@", 128, 0, 0);

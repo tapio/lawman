@@ -43,13 +43,34 @@ function UI(view, pl) {
 		view.putString(" " + pl.weapons.throwable.name, 0, row++, c.r, c.g, c.b);
 		view.putString(ammoStr, 0, row++, c.r, c.g, c.b);
 		++row;
-		// Action button
+		// Action buttons
+		// ++rows are separate to maintain consistent layout
+		++row;
 		if (pl.drawn && pl.drawn.ammo)
-			view.putString("[␣] Shoot closest", 0, row++, 160, 0, 0);
+			view.putString("[␣] Shoot closest", 0, row, 160, 0, 0);
+		++row;
 		if (pl.drawn && !pl.drawn.ammo)
-			view.putString("[␣] Reload", 0, row++, 160, 0, 0);
+			view.putString("[␣] Reload", 0, row, 160, 0, 0);
 		if (pl.drawn && pl.drawn.ammo < pl.drawn.clipSize)
-			view.putString("[R] Reload", 0, row++, 160, 0, 0);
+			view.putString("[R] Reload", 0, row, 160, 0, 0);
+		++row;
+		if (pl.health < pl.maxHealth)
+			view.putString("[B] Use bandage", 0, row, 160, 0, 0);
+		row += 2;
+		view.putString("Inventory:", 0, row++, 0, 100, 0);
+		var invX = 0;
+		var invSize = 0;
+		for (var i = 0; i < pl.inventory.length; ++i) {
+			var item = pl.inventory[i];
+			view.put(item.tile, invX, row);
+			if (item.space > 1) {
+				view.putString(build("-", item.space-1), invX+1, row, item.tile.r, item.tile.g, item.tile.b);
+			}
+			invX += item.space;
+			invSize += item.space;
+			if (invX > view.w) { invX = invX % view.w; ++row; }
+		}
+		view.putString(build("_", pl.maxInventory - invSize), invX, row, 50, 255, 50);
 
 		view.render();
 	};
