@@ -48,9 +48,9 @@ function UI(view, pl) {
 		++row;
 		if (pl.drawn && pl.drawn.ammo)
 			view.putString("[␣] Shoot closest", 0, row, 160, 0, 0);
-		++row;
 		if (pl.drawn && !pl.drawn.ammo)
 			view.putString("[␣] Reload", 0, row, 160, 0, 0);
+		++row;
 		if (pl.drawn && pl.drawn.ammo < pl.drawn.clipSize)
 			view.putString("[R] Reload", 0, row, 160, 0, 0);
 		++row;
