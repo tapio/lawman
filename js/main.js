@@ -16,8 +16,8 @@
 		tile: new ut.Tile("@", 0, 0, 160)
 	});
 	pl.faction = 1; // Lawman
-	var term = new ut.Viewport(document.getElementById("game"), 31, 31, "auto", true);
-	var hud = new ut.Viewport(document.getElementById("hud"), 25, 31, "auto");
+	var term = new ut.Viewport(document.getElementById("game"), 31, 31, "canvas", true);
+	var hud = new ut.Viewport(document.getElementById("hud"), 25, 31, "canvas");
 	var ui = new UI(hud, pl);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
@@ -107,6 +107,7 @@
 			}
 			tick();
 		}
+		else if (k === ut.KEY_B) { pl.use(Items.bandage.name); tick(); }
 		else if (k === ut.KEY_R) { pl.reload(); tick(); }
 		else if (k === ut.KEY_1) { pl.equip(1); tick(); }
 		else if (k === ut.KEY_2) { pl.equip(2); tick(); }

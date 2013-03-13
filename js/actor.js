@@ -64,7 +64,22 @@ Actor.prototype.reload = function(target) {
 	if (!this.drawn || this.drawn.ammo == this.drawn.clipSize) return;
 	// TODO: Non-infinite bullets
 	this.drawn.ammo = this.drawn.clipSize;
-}
+};
+
+Actor.prototype.use = function(itemName) {
+	for (var i = 0; i < this.inventory.length; ++i) {
+		var item = this.inventory[i];
+		if (item.name === itemName) {
+			if (itemName == Items.bandage.name && this.health < this.maxHealth) {
+				this.inventory.splice(i, 1);
+				this.health += 3;
+				if (this.health > this.maxHealth) this.health = this.maxHealth;
+				return;
+			}
+			return;
+		}
+	}
+};
 
 Actor.prototype.banditAI = function(game) {
 	// Find nearest lawman
