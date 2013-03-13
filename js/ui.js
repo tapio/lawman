@@ -25,6 +25,7 @@ function UI(view, pl) {
 		c = pickColor(pl.weapons.gun1, pl);
 		ammoStr = " Ammo: " + build("✒", pl.weapons.gun1.ammo, " ", pl.weapons.gun1.clipSize);
 		view.putString("[1] Right hand:", 0, row++, c.r, c.g, c.b);
+		view.putString(" " + pl.weapons.gun1.name, 0, row++, c.r, c.g, c.b);
 		view.putString(ammoStr, 0, row++, c.r, c.g, c.b);
 		c = pickColor(pl.weapons.gun2, pl);
 		ammoStr = " Ammo: " + build("✒", pl.weapons.gun2.ammo, " ", pl.weapons.gun2.clipSize);
