@@ -37,11 +37,11 @@ function UI(view, pl) {
 		view.putString("[2] Secondary:", 0, row++, c.r, c.g, c.b);
 		view.putString(" " + pl.weapons.secondary.name, 0, row++, c.r, c.g, c.b);
 		view.putString(ammoStr, 0, row++, c.r, c.g, c.b);
-		c = pickColor(pl.weapons.throwable, pl);
-		ammoStr = " Ammo: " + build("✒", pl.weapons.throwable.ammo, " ", pl.weapons.throwable.clipSize);
-		view.putString("[3] Throwable:", 0, row++, c.r, c.g, c.b);
-		view.putString(" " + pl.weapons.throwable.name, 0, row++, c.r, c.g, c.b);
-		view.putString(ammoStr, 0, row++, c.r, c.g, c.b);
+		//c = pickColor(pl.weapons.throwable, pl);
+		//ammoStr = " Ammo: " + build("✒", pl.weapons.throwable.ammo, " ", pl.weapons.throwable.clipSize);
+		//view.putString("[3] Throwable:", 0, row++, c.r, c.g, c.b);
+		//view.putString(" " + pl.weapons.throwable.name, 0, row++, c.r, c.g, c.b);
+		//view.putString(ammoStr, 0, row++, c.r, c.g, c.b);
 		++row;
 		// Action buttons
 		// ++rows are separate to maintain consistent layout
