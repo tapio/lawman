@@ -52,7 +52,9 @@ Actor.prototype.equip = function(num) {
 Actor.prototype.shoot = function(target) {
 	if (!this.drawn) return;
 	var d = distance(this.x, this.y, target.x, target.y);
-	if (d > this.drawn.range) return "Bullet fell short..."
+	if (d > this.drawn.range) return "Bullet fell short...";
+	if (RNG.random() > this.drawn.accuracy)
+		return "Missed!";
 	target.health -= this.drawn.damage;
 	if (target.health <= 0) {
 		this.money += 10 + Math.floor(RNG.random() * 10);
