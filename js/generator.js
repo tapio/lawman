@@ -50,11 +50,26 @@ function generateTown(map, game) {
 			return house;
 		}
 
-		function addFurniture(x1, y1, x2, y2, amount) {
+		function addCloset(x1, y1, x2, y2, amount) {
 			while (amount) {
 				var x = rand(x1, x2);
 				var y = rand(y1, y2);
-				tiles[y][x] = randElem([ CHAIR, TABLE, CLOSET ], r);
+				if (tiles[y-1][x] == WALL || tiles[y+1][x] == WALL || tiles[y][x-1] == WALL || tiles[y][x+1] == WALL) {
+					tiles[y][x] = CLOSET;
+					--amount;
+				}
+			}
+		}
+
+		function addTableGroup(x1, y1, x2, y2, amount) {
+			while (amount) {
+				var x = rand(x1+1, x2-1);
+				var y = rand(y1+1, y2-1);
+				tiles[y][x] = TABLE;
+				if (RNG.random() < 0.4) tiles[y-1][x] = CHAIR;
+				if (RNG.random() < 0.4) tiles[y+1][x] = CHAIR;
+				if (RNG.random() < 0.4) tiles[y][x-1] = CHAIR;
+				if (RNG.random() < 0.4) tiles[y][x+1] = CHAIR;
 				--amount;
 			}
 		}
@@ -82,8 +97,18 @@ function generateTown(map, game) {
 				if (rand(1,20) == 1) tiles[j][x1-1] = BARREL;
 				if (rand(1,20) == 1) tiles[j][x2+1] = BARREL;
 			}
-			if (type == "house")
-				addFurniture(x1 + 1, y1 + 1, x2 - 1, y2 - 1, rand(4,6));
+			// Furnitures
+			++x1; ++y1; --x2; --y2;
+			if (type == "house") {
+				addTableGroup(x1, y1, x2, y2, rand(1,2));
+				addCloset(x1, y1, x2, y2, rand(1,3));
+			} else if (type == "gunstore") {
+				addCloset(x1, y1, x2, y2, rand(6,9));
+			} else if (type == "doctors") {
+				addCloset(x1, y1, x2, y2, rand(4,6));
+			} else if (type == "saloon") {
+				addTableGroup(x1, y1, x2, y2, rand(4,7));
+			}
 		}
 
 		var places = [ "doctor", "gunstore", "sheriff", "saloon", "church" ];
