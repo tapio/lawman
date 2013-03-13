@@ -1,0 +1,23 @@
+* Visual shooting
+* Line-of-sight for shooting
+* Messages for hitting player
+* Better furniture placement
+* Multiple messages
+* Weapon accuracy
+* Sheriff's office
+	- Armory
+	- Missions
+* Doctor's office
+	- Heal wounds
+	- Buy bandages
+* Gun store
+	- Buy weapons
+	- Buy ammo
+* Saloon
+	- Gamble
+	- Drink
+* Configuration
+	- FOV detail
+	- Renderer
+	- Difficulty?
+
