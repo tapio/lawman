@@ -62,8 +62,8 @@ Actor.prototype.shoot = function(target) {
 
 Actor.prototype.reload = function(target) {
 	if (!this.drawn || this.drawn.ammo == this.drawn.clipSize) return;
-	// TODO: Non-infinite bullets
-	this.drawn.ammo = this.drawn.clipSize;
+	while (this.drawn.ammo < this.drawn.clipSize && this.use(Items.gunAmmo.name))
+		++this.drawn.ammo;
 };
 
 Actor.prototype.use = function(itemName) {
@@ -74,9 +74,12 @@ Actor.prototype.use = function(itemName) {
 				this.inventory.splice(i, 1);
 				this.health += 3;
 				if (this.health > this.maxHealth) this.health = this.maxHealth;
-				return;
+				return true;
+			} else if (itemName == Items.gunAmmo.name) {
+				this.inventory.splice(i, 1);
+				return true;
 			}
-			return;
+			return false;
 		}
 	}
 };
