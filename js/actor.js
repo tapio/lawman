@@ -66,11 +66,12 @@ Actor.prototype.reload = function(target) {
 	while (this.drawn.ammo < this.drawn.clipSize && this.use(Items.gunAmmo.name)) /* noop */;
 };
 
-Actor.prototype.use = function(itemName) {
+Actor.prototype.use = function(button) {
 	for (var i = 0; i < this.inventory.length; ++i) {
 		var item = this.inventory[i];
-		if (item.name === itemName) {
-			if (item.use(this)) {
+		if (item.button === button) {
+			if (item.useCond(this)) {
+				item.use(this);
 				this.inventory.splice(i, 1);
 				return true;
 			} else return false;

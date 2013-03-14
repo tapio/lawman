@@ -107,11 +107,10 @@
 			}
 			tick();
 		}
-		else if (k === ut.KEY_B) { pl.use(Items.bandage.name); tick(); }
-		else if (k === ut.KEY_R) { pl.reload(); tick(); }
 		else if (k === ut.KEY_1) { pl.equip(1); tick(); }
 		else if (k === ut.KEY_2) { pl.equip(2); tick(); }
 		else if (k === ut.KEY_3) { pl.equip(3); tick(); }
+		else if (pl.use(k)) tick();
 	});
 
 	tick();

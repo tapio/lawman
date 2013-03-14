@@ -15,8 +15,8 @@ function UI(view, pl) {
 	}
 
 	this.update = function() {
+		var row = 0, c, i, item, ammoStr = "";
 		view.clear();
-		var row = 0, c, ammoStr = "";
 		view.putString("Health:", 0, row, 160, 0, 0);
 		view.putString(build("♥", pl.health, "♡", pl.maxHealth), 8, row++, 255, 0, 0);
 		view.putString("Money: $" + pl.money, 0, row++, 200, 200, 0);
@@ -43,25 +43,30 @@ function UI(view, pl) {
 		//view.putString(" " + pl.weapons.throwable.name, 0, row++, c.r, c.g, c.b);
 		//view.putString(ammoStr, 0, row++, c.r, c.g, c.b);
 		++row;
-		// Action buttons
-		// ++rows are separate to maintain consistent layout
+		// Shooting
 		++row;
 		if (pl.drawn && pl.drawn.ammo)
-			view.putString("[␣] Shoot closest", 0, row, 160, 0, 0);
-		if (pl.drawn && !pl.drawn.ammo)
-			view.putString("[␣] Reload", 0, row, 160, 0, 0);
+			view.putString("[␣] Shoot closest", 0, row++, 160, 0, 0);
+		// Item actions
+		pl.inventory.sort(function(a, b) { return a.space < b.space; });
+		var lastItem = {};
+		for (i = 0; i < pl.inventory.length; ++i) {
+			item = pl.inventory[i];
+			if (item.button && item.button != lastItem.button) {
+				lastItem = item;
+				if (item.useCond(pl)) {
+					view.putString("[" + String.fromCharCode(item.button) + "] " + item.useText, 0, row++, 160, 0, 0);
+				}
+			}
+		}
 		++row;
-		if (pl.drawn && pl.drawn.ammo < pl.drawn.clipSize)
-			view.putString("[R] Reload", 0, row, 160, 0, 0);
-		++row;
-		if (pl.health < pl.maxHealth)
-			view.putString("[B] Use bandage", 0, row, 160, 0, 0);
-		row += 2;
+		// Inventory
+		row = Math.max(row, 22);
 		view.putString("Inventory:", 0, row++, 0, 100, 0);
 		var invX = 0;
 		var invSize = 0;
-		for (var i = 0; i < pl.inventory.length; ++i) {
-			var item = pl.inventory[i];
+		for (i = 0; i < pl.inventory.length; ++i) {
+			item = pl.inventory[i];
 			view.put(item.tile, invX, row);
 			if (item.space > 1) {
 				view.putString(build("-", item.space-1), invX+1, row, item.tile.r, item.tile.g, item.tile.b);
