@@ -62,10 +62,6 @@ Actor.prototype.shoot = function(target) {
 	} else return "You hit " + target.name + "!";
 };
 
-Actor.prototype.reload = function(target) {
-	while (this.drawn.ammo < this.drawn.clipSize && this.use(Items.gunAmmo.name)) /* noop */;
-};
-
 Actor.prototype.use = function(button) {
 	for (var i = 0; i < this.inventory.length; ++i) {
 		var item = this.inventory[i];

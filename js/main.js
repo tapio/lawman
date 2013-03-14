@@ -92,18 +92,14 @@
 			}
 			tick();
 		}
-		else if (k === ut.KEY_SPACE && pl.drawn) {
-			if (pl.drawn.ammo) { // Shooting
-				--pl.drawn.ammo;
-				var target = game.findNearestActor(pl, -1);
-				if (target && target.dist < term.cy) {
-					msg = pl.shoot(target.actor);
-					if (msg) game.messages.push(msg);
-				} else {
-					game.messages.push("You shoot in the air for fun.");
-				}
-			} else { // Reload
-				pl.reload();
+		else if (k === ut.KEY_SPACE && pl.drawn && pl.drawn.ammo) {
+			--pl.drawn.ammo;
+			var target = game.findNearestActor(pl, -1);
+			if (target && target.dist < term.cy) {
+				msg = pl.shoot(target.actor);
+				if (msg) game.messages.push(msg);
+			} else {
+				game.messages.push("You shoot in the air for fun.");
 			}
 			tick();
 		}
