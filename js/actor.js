@@ -63,25 +63,17 @@ Actor.prototype.shoot = function(target) {
 };
 
 Actor.prototype.reload = function(target) {
-	if (!this.drawn || this.drawn.ammo == this.drawn.clipSize) return;
-	while (this.drawn.ammo < this.drawn.clipSize && this.use(Items.gunAmmo.name))
-		++this.drawn.ammo;
+	while (this.drawn.ammo < this.drawn.clipSize && this.use(Items.gunAmmo.name)) /* noop */;
 };
 
 Actor.prototype.use = function(itemName) {
 	for (var i = 0; i < this.inventory.length; ++i) {
 		var item = this.inventory[i];
 		if (item.name === itemName) {
-			if (itemName == Items.bandage.name && this.health < this.maxHealth) {
-				this.inventory.splice(i, 1);
-				this.health += 3;
-				if (this.health > this.maxHealth) this.health = this.maxHealth;
-				return true;
-			} else if (itemName == Items.gunAmmo.name) {
+			if (item.use(this)) {
 				this.inventory.splice(i, 1);
 				return true;
-			}
-			return false;
+			} else return false;
 		}
 	}
 };
