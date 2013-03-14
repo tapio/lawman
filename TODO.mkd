@@ -1,9 +1,12 @@
 * Visual shooting
 * Line-of-sight for shooting
 * Messages for hitting player
+* Experience and level system
+	- Actor properties: accuracy, dexterity, toughness
+	- On level-up, present a screen to upgrade ability
+	- Character screen for checking out the stats
 * Better furniture placement
 * Multiple messages
-* Weapon accuracy
 * Sheriff's office
 	- Armory
 	- Missions
