@@ -27,7 +27,7 @@ Game.prototype.interact = function(pl) {
 };
 
 Game.prototype.findNearestActor = function(searcher, faction) {
-	var min_d = Infinity;
+	var min_d = 2500; // Let's not bother with distances greater than 50^2
 	var closest = null;
 	for (var i = 0; i < this.actors.length; ++i) {
 		var actor = this.actors[i];
@@ -35,8 +35,11 @@ Game.prototype.findNearestActor = function(searcher, faction) {
 		var d = distance2(searcher.x, searcher.y, actor.x, actor.y);
 		if (d < min_d) {
 			if (faction === undefined || actor.faction === faction) {
-				closest = actor;
-				min_d = d;
+				if (this.map.sight(searcher.x, searcher.y, actor.x, actor.y)) {
+					closest = actor;
+					min_d = d;
+					console.log("Sight!");
+				}
 			}
 		}
 	}

@@ -66,6 +66,34 @@ Map.prototype.passable = function(x, y, ai) {
 	else return false;
 };
 
+Map.prototype.singleRaycast = function(x1, y1, x2, y2, angle) {
+	angle = angle !== undefined ? angle : Math.atan2(y2 - y1, x2 - x1);
+	var step = 0.3333, step2 = step * step;
+	var dx = Math.cos(angle) * step;
+	var dy = Math.sin(angle) * step;
+	var xx = x1 + dx, yy = y1 + dy;
+	while (true) {
+		var testx = Math.round(xx);
+		var testy = Math.round(yy);
+		var tile = this.getTile(testx, testy);
+		if (tile.ch !== "·" && !tile.transparent)
+			return false;
+		if (distance2(xx, yy, x2 ,y2) <= step2)
+			return true;
+		xx += dx; yy += dy;
+	}
+};
+
+Map.prototype.sight = function(x1, y1, x2, y2) {
+	var d = 0.3;
+	var a = Math.atan2(y2 - y1, x2 - x1);
+	// Do four offset raycasts from tile corners
+	return this.singleRaycast(x1-d, y1-d, x2-d, y2-d, a) ||
+		   this.singleRaycast(x1+d, y1-d, x2+d, y2-d, a) ||
+		   this.singleRaycast(x1-d, y1+d, x2-d, y2+d, a) ||
+		   this.singleRaycast(x1+d, y1+d, x2+d, y2+d, a);
+};
+
 Map.prototype.action = function(x, y) {
 	var t = this.getTile(x, y);
 	switch (t.ch) {

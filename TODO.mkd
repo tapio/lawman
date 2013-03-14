@@ -1,5 +1,5 @@
 * Visual shooting
-* Line-of-sight for shooting
+* Melee combat
 * Messages for hitting player
 * Experience and level system
 	- Actor properties: accuracy, dexterity, toughness
