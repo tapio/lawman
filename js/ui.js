@@ -1,5 +1,5 @@
 
-function UI(view, pl) {
+function UI(pl) {
 	function build(ch, amount, padch, padamount) {
 		if (amount <= 0) return "-None-";
 		var st = "", i;
@@ -14,7 +14,7 @@ function UI(view, pl) {
 		return { r: 160, g: 100, b: 64 };
 	}
 
-	this.update = function() {
+	this.render = function(view) {
 		var row = 0, c, i, item, ammoStr = "";
 		view.clear();
 		view.putString("Health:", 0, row, 160, 0, 0);

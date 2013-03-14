@@ -18,7 +18,7 @@
 	pl.faction = 1; // Lawman
 	var term = new ut.Viewport(document.getElementById("game"), 31, 31, "canvas", true);
 	var hud = new ut.Viewport(document.getElementById("hud"), 25, 31, "canvas");
-	var ui = new UI(hud, pl);
+	var ui = new UI(pl);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
 	var menu = null;
@@ -73,7 +73,7 @@
 		// Display time of day
 		term.putString((game.hour > 12 ? (game.hour - 12) + "pm" : game.hour + "am"), 0, term.h-1, 200, 150, 0);
 		term.render(); // Render
-		ui.update();
+		ui.render(hud);
 		game.messages = [];
 	}
 
