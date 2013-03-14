@@ -1,7 +1,7 @@
 
 function Item(params) {
 	this.name = params.name;
-	this.price = params.price || 1;
+	this.price = params.price;
 	this.tile = params.tile;
 	this.space = params.space || 1;
 	this.service = params.service || false;

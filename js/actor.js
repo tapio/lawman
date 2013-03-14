@@ -8,6 +8,13 @@ function Actor(params) {
 	this.maxHealth = 15;
 	this.health = this.maxHealth;
 	this.money = params.money || Math.floor(RNG.random() * 10);
+	this.exp = 0;
+	this.nextLevel = 15;
+	this.level = 1;
+	this.accuracy = 1;
+	this.dexterity = 1;
+	this.toughness = 1;
+
 	this.weapons = {
 		gun1: this.gender === "m" ? Weapons.remington.clone() : Weapons.dummy,
 		gun2: Weapons.dummy,
@@ -56,8 +63,10 @@ Actor.prototype.shoot = function(target) {
 	if (RNG.random() > this.drawn.accuracy)
 		return "Missed!";
 	target.health -= this.drawn.damage;
+	++this.exp;
 	if (target.health <= 0) {
 		this.money += 10 + Math.floor(RNG.random() * 10);
+		this.exp += 10;
 		return "You kill " + target.name + "!";
 	} else return "You hit " + target.name + "!";
 };
@@ -175,3 +184,27 @@ Actor.femaleNames = [ "Adaline", "Addie", "Agnes", "Aileen", "Ailene", "Aisha", 
 Actor.familyNames = [ "Jones", "Ruhl", "Eisenman", "Van", "Beard", "Emrick", "Newbern", "Powers", "Schmidt", "Gronko", "Hayhurst", "Nash", "Maclagan", "Davis", "Iseman", "Guess", "Campbell", "Faust", "Sadley", "Wallace", "Gibson", "Candles", "Catherina", "Judge", "Woollard", "Errett", "Randolph", "Kline", "Catlay", "Tomlinson", "Haynes", "Courtney", "Bowman", "Poley", "Cady", "Tedrow", "Smothers", "Magor", "Oppenheimer", "Bullard", "Marjorie", "Ledgerwood", "Shea", "Teagarden", "Mens", "Ulery", "Blatenberger", "Bryant", "Barth", "Nicholas", "Klockman", "Eckert", "Lord", "Wheeler", "Barnes", "Cressman", "Johnston", "Ream", "Fleming", "Faast", "Dryfus", "Flanders", "Earl", "Scott", "Moore", "James", "Carter", "Batten", "Edwards", "Joghs", "Butler", "Kooser", "Finlay", "Harper", "Giesen", "Hook", "Pery", "Hicks", "Hincken", "Patton", "Blair", "Lowe", "Leech", "Pittman", "Tomco", "Stainforth", "Warner", "Ewing", "Ackerley", "Shallenberger", "Ashmore", "Priebe", "Southern", "Clewett", "Park", "Shirey", "Read", "Fair", "Sell", "Rega", "Todd", "Herndon", "Ling", "Jube", "Oneal", "Beck", "Buttermore", "Whittier", "Wells", "Kistler", "Stewart", "Trevithick", "Buehler", "Miller", "Durstine", "Unk", "Zeal", "Cavalet", "Wile", "Higgens", "Dugger", "Hardie", "Yeskey", "Beals", "Roby", "Stoddard", "Richter", "Newbiggin", "Gist", "Osterwise", "Cowper", "Mathews", "Greenwood", "Metzer", "Houston", "Eisenmann", "Erschoff", "Osterweis", "Cowart", "Ruch", "Hoenshell", "Peters", "Larson", "Cram", "Fry", "Fillmore", "Jyllian", "Little", "Highlands", "Rockwell", "Tilton", "Wildman", "Elless", "Rumbaugh", "Mackendoerfer", "Agg", "Fuchs", "Blackburn", "Knapenberger", "Brown", "Staymates", "Hall", "Philips", "Agnes", "Dennis", "Martin", "Jenkins", "Keener", "Harris", "Robinson", "Noton", "Drennan", "Draudy", "Swift", "Kemble", "Ray", "Franks", "Young", "Porter", "Linton", "Chapman", "Drumm", "Rowley", "Rhinehart", "Logue", "Rosensteel", "Mitchell", "Elder", "Marshall", "Willcox", "Kellogg", "Dean", "Baker", "Foster", "Baumgartner", "Koster", "Wood", "Todd", "Warrick", "Warren", "Joyce", "Bashline", "Walker", "Wolff", "Stafford", "Dickson", "Zadovsky", "Crom", "Easter", "Dunlap", "Marcotte", "Wells", "Losey", "Stanfield", "Sutorius", "Yates", "Hujsak", "Reamer", "Lineman", "Kight", "Stough", "Fryer", "Coldsmith", "Thorley", "Richards", "Patterson", "Focell", "Filby", "Mccrady", "Rahl", "Hoopengarner", "Neely", "Hil", "Craig", "Snyder", "Ramsey", "Swarner", "Jowers", "Munshower", "Lowstetter", "Cowher", "Whishaw", "Kimmons", "Mackendrick", "Howard", "Fuller", "Mcfall", "Demuth", "Baldwin", "Arthur", "Bauerle", "Polson", "Mueller", "Hobbs", "Mcmullen", "Davis", "Fitzgerald", "Bard", "Pfeifer", "Stiffey", "Thompson", "Sherlock", "Shafer", "Berry", "Greene", "Perkins", "Allshouse", "Knopsnider", "Hardy", "Toyley", "Conrad", "Fisher", "Otis", "Leach", "Flick", "Dickinson", "Baird", "Monahan", "Hutton", "Jesse", "Merryman", "Frankenberger", "Schreckengost", "Geddinge", "Hice", "Minnie", "Hughes", "Hawker", "Driggers", "Light", "Woodward", "Sandys", "Fowler", "Wible", "Newlove", "Ammons", "Reddish", "Hays", "Close", "Saltser" ];
 Actor.maleJobs = [ "Drunk", "Farmer", "Miller", "Miner" ];
 Actor.femaleJobs = [ "Housewife", "Teacher", "Launderer" ];
+
+Actor.abilityItems = [
+	new Item({
+		name: "Accuracy (hit more easily)",
+		service: true,
+		use: function(target) {
+			++target.accuracy;
+		}
+	}),
+	new Item({
+		name: "Dexterity (avoid hits)",
+		service: true,
+		use: function(target) {
+			++target.dexterity;
+		}
+	}),
+	new Item({
+		name: "Toughness (reduce damage)",
+		service: true,
+		use: function(target) {
+			++target.toughness;
+		}
+	})
+]

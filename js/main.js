@@ -77,6 +77,12 @@
 		game.update();
 		fov.update(pl.x, pl.y); // Update field of view
 		if (pl.health <= 0) game.messages.push("You died!");
+		if (pl.exp >= pl.nextLevel) {
+			pl.exp -= pl.nextLevel;
+			pl.nextLevel *= 2;
+			++pl.level;
+			menu = new Menu("Level Up!", Actor.abilityItems, pl, true);
+		}
 		render();
 		game.messages = [];
 	}
@@ -87,8 +93,7 @@
 		var msg = null;
 		// Menu
 		if (menu) {
-			if (k == ut.KEY_ESCAPE) menu = null;
-			else menu.action(k);
+			if (menu.action(k)) menu = null;
 			render();
 			return;
 		}

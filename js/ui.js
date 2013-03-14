@@ -20,6 +20,7 @@ function UI(pl) {
 		view.putString("Health:", 0, row, 160, 0, 0);
 		view.putString(build("♥", pl.health, "♡", pl.maxHealth), 8, row++, 255, 0, 0);
 		view.putString("Money: $" + pl.money, 0, row++, 200, 200, 0);
+		view.putString("Exp: " + pl.exp + "/" + pl.nextLevel, 0, row++, 100, 0, 150);
 		++row;
 		// Weapons
 		c = pickColor(pl.weapons.gun1, pl);
@@ -82,7 +83,7 @@ function UI(pl) {
 }
 
 
-function Menu(name, items, pl) {
+function Menu(name, items, pl, autoClose) {
 	var keys = "abcdefghijklmnopqrstuvwxyz";
 
 	function build(ch, amount) {
@@ -94,26 +95,40 @@ function Menu(name, items, pl) {
 
 	this.render = function(view) {
 		var row = 0, c;
-		view.putString(name, 0, row++, 200, 200, 200);
-		view.putString(build("=", name.length), 0, row++, 200, 200, 200);
+		view.clear();
+		view.putString(name, 0, row++, 0, 200, 0);
+		view.putString(build("=", name.length), 0, row++, 0, 200, 0);
 		++row;
 
 		for (var i = 0; i < items.length; ++i, row+=2) {
 			var item = items[i];
 			var str = "[" + keys[i] + "] " + item.name;
 			if (item.tile) c = item.tile;
-			else c = { r: 200, g: 150, b: 100 };
+			else c = { r: 200, g: 100, b: 0 };
 			view.putString(str, 0, row, c.r, c.g, c.b);
-			view.putString("$" + item.price, view.w - 8, row, 200, 200, 0);
+			if (item.price !== undefined)
+				view.putString("$" + item.price, view.w - 8, row, 200, 200, 0);
 		}
 		++row;
-		view.putString("Press the letter to buy.", 0, row++, 100, 100, 100);
-		view.putString("ESC to exit.", 0, row++, 100, 100, 100);
+		view.putString("Press a letter...", 0, row++, 100, 100, 100);
+		if (!autoClose)
+			view.putString("ESC to exit.", 0, row++, 100, 100, 100);
 		view.render();
 	};
 
 	this.action = function(key) {
+		if (!autoClose && key == ut.KEY_ESCAPE) return true;
 		var i = key - ut.KEY_A;
-		// TODO
+		if (i < 0 || i >= items.length) return false;
+		var item = items[i];
+		if (item.price && pl.money < item.price) return false;
+		if (item.service) {
+			if (!item.useCond(pl)) return false;
+			item.use(pl);
+			console.log(pl);
+		} else if (true) { // TODO: Check for inventory space
+			pl.inventory.push(item);
+		}
+		return autoClose;
 	};
 }
