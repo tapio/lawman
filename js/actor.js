@@ -24,7 +24,7 @@ function Actor(params) {
 		courage: RNG.random(),
 		hostile: params.hostile === undefined ? false : params.hostile
 	};
-	this.inventory = [ Items.bandage, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo ];
+	this.inventory = [ Items.bandage, Items.gunCylinder, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo, Items.gunAmmo ];
 	this.maxInventory = 50;
 	this.tile = params.tile;
 	if (!this.tile) {
