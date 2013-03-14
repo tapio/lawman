@@ -21,6 +21,7 @@
 	var ui = new UI(hud, pl);
 	var eng = new ut.Engine(term, function(x, y) { return map.getTile(x, y); }, map.width, map.length);
 	var fov = new FOV(term, eng);
+	var menu = null;
 	game.add(pl);
 	var dark = new Color(0.4, 0.4, 0.4);
 	var LIGHT_GRADIENT = new ColorGradient(dark, dark);
@@ -44,6 +45,12 @@
 	// "Main loop"
 	function tick() {
 		var i, a, len, fg, bg, tilex, tiley;
+		if (menu) {
+			menu.render(term);
+			term.render(); // Render
+			ui.update();
+			return;
+		}
 		game.update();
 		var camx = clamp(pl.x - term.cx, 0, map.width - term.w);
 		var camy = clamp(pl.y - term.cy, 0, map.height - term.h);
@@ -74,6 +81,13 @@
 	ut.initInput(function(k) {
 		if (pl.health <= 0) return;
 		var msg = null;
+		// Menu
+		if (menu) {
+			if (k == ut.KEY_ESCAPE) menu = null;
+			else menu.action(k);
+			tick();
+			return;
+		}
 		var movedir = { x: 0, y: 0 }; // Movement vector
 		if (k === ut.KEY_LEFT || k === ut.KEY_H) movedir.x = -1;
 		else if (k === ut.KEY_RIGHT || k === ut.KEY_L) movedir.x = 1;

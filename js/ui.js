@@ -80,3 +80,39 @@ function UI(view, pl) {
 		view.render();
 	};
 }
+
+
+function Menu(name, items, pl) {
+	var keys = "abcdefghijklmnopqrstuvwxyz";
+
+	function build(ch, amount) {
+		if (amount <= 0) return "";
+		var st = "";
+		for (var i = 0; i < amount; ++i) st += ch;
+		return st;
+	}
+
+	this.render = function(view) {
+		var row = 0, c;
+		view.putString(name, 0, row++, 200, 200, 200);
+		view.putString(build("=", name.length), 0, row++, 200, 200, 200);
+		++row;
+
+		for (var i = 0; i < items.length; ++i, row+=2) {
+			var item = items[i];
+			var str = "[" + keys[i] + "] " + item.name;
+			if (item.tile) c = item.tile;
+			else c = { r: 200, g: 150, b: 100 };
+			view.putString(str, 0, row, c.r, c.g, c.b);
+			view.putString("$" + item.price, view.w - 8, row, 200, 200, 0);
+		}
+		++row;
+		view.putString("Press the letter to buy.", 0, row++, 100, 100, 100);
+		view.putString("ESC to exit.", 0, row++, 100, 100, 100);
+	};
+
+	this.action = function(key) {
+		var i = key - ut.KEY_A;
+		// TODO
+	};
+}
