@@ -109,6 +109,7 @@ function Menu(name, items, pl) {
 		++row;
 		view.putString("Press the letter to buy.", 0, row++, 100, 100, 100);
 		view.putString("ESC to exit.", 0, row++, 100, 100, 100);
+		view.render();
 	};
 
 	this.action = function(key) {

@@ -42,19 +42,16 @@
 		return shaded;
 	});
 
-	// "Main loop"
-	function tick() {
+	// Draw viewport
+	function render() {
 		var i, a, len, fg, bg, tilex, tiley;
 		if (menu) {
 			menu.render(term);
-			term.render(); // Render
-			ui.update();
+			ui.render(hud);
 			return;
 		}
-		game.update();
 		var camx = clamp(pl.x - term.cx, 0, map.width - term.w);
 		var camy = clamp(pl.y - term.cy, 0, map.height - term.h);
-		fov.update(pl.x, pl.y); // Update field of view
 		eng.update(camx + term.cx, camy + term.cy); // Update tiles
 		// Actors
 		len = game.actors.length;
@@ -67,13 +64,20 @@
 			bg = term.get(tilex, tiley).getBackgroundJSON(); // Background color
 			term.put(new ut.Tile(fg.ch, fg.r, fg.g, fg.b, bg.r, bg.g, bg.b), tilex, tiley);
 		}
-		if (pl.health <= 0) game.messages.push("You died!");
 		if (game.messages.length)
 			term.putString(last(game.messages), 0, 0, 200, 0, 0);
 		// Display time of day
 		term.putString((game.hour > 12 ? (game.hour - 12) + "pm" : game.hour + "am"), 0, term.h-1, 200, 150, 0);
 		term.render(); // Render
 		ui.render(hud);
+	}
+
+	// A turn
+	function tick() {
+		game.update();
+		fov.update(pl.x, pl.y); // Update field of view
+		if (pl.health <= 0) game.messages.push("You died!");
+		render();
 		game.messages = [];
 	}
 
@@ -85,7 +89,7 @@
 		if (menu) {
 			if (k == ut.KEY_ESCAPE) menu = null;
 			else menu.action(k);
-			tick();
+			render();
 			return;
 		}
 		var movedir = { x: 0, y: 0 }; // Movement vector
