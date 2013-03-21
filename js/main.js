@@ -81,7 +81,7 @@
 			pl.exp -= pl.nextLevel;
 			pl.nextLevel *= 2;
 			++pl.level;
-			menu = new Menu("Level Up!", Actor.abilityItems, pl, true);
+			menu = new CharacterMenu(Actor.abilityItems, pl, 1);
 		}
 		render();
 		game.messages = [];
@@ -129,6 +129,7 @@
 		else if (k === ut.KEY_1) { pl.equip(1); tick(); }
 		else if (k === ut.KEY_2) { pl.equip(2); tick(); }
 		else if (k === ut.KEY_3) { pl.equip(3); tick(); }
+		else if (k === ut.KEY_TAB) { menu = new CharacterMenu(Actor.abilityItems, pl, 0); render(); }
 		else if (pl.use(k)) tick();
 	});
 

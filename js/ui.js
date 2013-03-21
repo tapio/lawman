@@ -77,13 +77,14 @@ function UI(pl) {
 			if (invX > view.w) { invX = invX % view.w; ++row; }
 		}
 		view.putString(build(".", pl.maxInventory - invSize), invX, row, 50, 255, 50);
+		view.putString("[Tab] View skills", 0, view.h-2, 100, 0, 150);
 
 		view.render();
 	};
 }
 
 
-function Menu(name, items, pl, autoClose) {
+function BuyMenu(name, items, pl) {
 	var keys = "abcdefghijklmnopqrstuvwxyz";
 
 	function build(ch, amount) {
@@ -111,13 +112,12 @@ function Menu(name, items, pl, autoClose) {
 		}
 		++row;
 		view.putString("Press a letter...", 0, row++, 100, 100, 100);
-		if (!autoClose)
-			view.putString("ESC to exit.", 0, row++, 100, 100, 100);
+		view.putString("ESC to exit.", 0, row++, 100, 100, 100);
 		view.render();
 	};
 
 	this.action = function(key) {
-		if (!autoClose && key == ut.KEY_ESCAPE) return true;
+		if (key == ut.KEY_ESCAPE) return true;
 		var i = key - ut.KEY_A;
 		if (i < 0 || i >= items.length) return false;
 		var item = items[i];
@@ -129,6 +129,55 @@ function Menu(name, items, pl, autoClose) {
 		} else if (true) { // TODO: Check for inventory space
 			pl.inventory.push(item);
 		}
-		return autoClose;
+		return false;
+	};
+}
+
+
+function CharacterMenu(items, pl, skillPoints) {
+	var keys = "abcdefghijklmnopqrstuvwxyz";
+	skillPoints = skillPoints || 0;
+
+	function build(ch, amount) {
+		if (amount <= 0) return "";
+		var st = "";
+		for (var i = 0; i < amount; ++i) st += ch;
+		return st;
+	}
+
+	this.render = function(view) {
+		var row = 0, c;
+		view.clear();
+		view.putString("Character skills", 0, row++, 0, 200, 0);
+		view.putString(build("=", name.length), 0, row++, 0, 200, 0);
+		++row;
+
+		for (var i = 0; i < items.length; ++i, row+=2) {
+			var item = items[i];
+			var str = skillPoints > 0 ? "[" + keys[i] + "] " : "";
+			str += item.name;
+			if (item.tile) c = item.tile;
+			else c = { r: 200, g: 100, b: 0 };
+			view.putString(str, 0, row, c.r, c.g, c.b);
+		}
+		++row;
+		if (skillPoints > 0)
+			view.putString("Press a letter...", 0, row++, 100, 100, 100);
+		else view.putString("Press any key...", 0, row++, 100, 100, 100);
+		view.render();
+	};
+
+	this.action = function(key) {
+		if (skillPoints <= 0) return true;
+		var i = key - ut.KEY_A;
+		if (i < 0 || i >= items.length) return false;
+		var item = items[i];
+		if (item.service) {
+			if (!item.useCond(pl)) return false;
+			item.use(pl);
+			--skillPoints;
+			console.log(pl);
+		}
+		return skillPoints <= 0;
 	};
 }
